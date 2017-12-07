@@ -21,6 +21,11 @@ export function getItem(key, type = 'session') {
   return getCookie(key);
 }
 
+export function removeItem(key, type = 'session') {
+  if (useStorage) {
+    return window[`${type}Storage`].removeItem(key);
+  }
+}
 
 export function setItemByUid(key, value, uid) {
   setItem(`_.${uid}.${key}`, value);
@@ -37,5 +42,6 @@ export function getItemByUid(key) {
 
 export default {
   setItem,
-  getItem
-};
+  getItem,
+  removeItem,
+}
