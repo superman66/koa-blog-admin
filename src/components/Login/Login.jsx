@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Icon, Input, Button, Checkbox } from 'antd';
+import { Form, Icon, Input, Button } from 'antd'
+
+import { setToken, setUser } from '../../utils/auth'
+import { goHomePage } from '../../utils/locationUtils'
 
 const FormItem = Form.Item;
 const propTypes = {}
@@ -12,6 +15,19 @@ class LoginForm extends Component {
     this.state = {
     }
   }
+  handleSubmit = (e) => {
+    const { onLogin } = this.props;
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        onLogin(values, (data) => {
+          setUser(data.user)
+          setToken(data.token)
+          goHomePage()
+        })
+      }
+    });
+  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -19,7 +35,7 @@ class LoginForm extends Component {
       <div className="login-wrapper">
         <Form onSubmit={this.handleSubmit} className="login-form">
           <FormItem>
-            {getFieldDecorator('userName', {
+            {getFieldDecorator('username', {
               rules: [{ required: true, message: 'Please input your username!' }],
             })(
               <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
@@ -33,12 +49,6 @@ class LoginForm extends Component {
               )}
           </FormItem>
           <FormItem>
-            {getFieldDecorator('remember', {
-              valuePropName: 'checked',
-              initialValue: true,
-            })(
-              <Checkbox>Remember me</Checkbox>
-              )}
             <a className="login-form-forgot" href="">Forgot password</a>
             <Button type="primary" htmlType="submit" className="login-form-button">
               Log in

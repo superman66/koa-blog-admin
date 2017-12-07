@@ -1,14 +1,14 @@
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators from '../../actions/login';
+import * as actionCreators from '../../actions/auth';
 import { Login } from '../../components/Login';
 
 
 function mapState2Props(state) {
-  const loginState = state.store.login;
+  const authState = state.store.auth;
   return {
-    status: loginState.status
+    status: authState.status
   };
 }
 
