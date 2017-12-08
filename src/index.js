@@ -13,7 +13,6 @@ import callAPIMiddleware from './middlewares/callAPIMiddleware'
 import './sass/main.scss'
 
 
-
 const middlewares = [thunkMiddleware, callAPIMiddleware];
 
 if (process.env.NODE_ENV === 'development') {

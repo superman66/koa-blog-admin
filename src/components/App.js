@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Spin } from 'antd'
 import { loggedIn } from '../utils/auth'
+import Loading from './Loading'
 
 const propTypes = {
   menus: PropTypes.array,
@@ -17,6 +19,12 @@ const childContextTypes = {
 
 class App extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      ready: false,
+    }
+  }
   getChildContext() {
     const { menus } = this.props;
     return {
@@ -24,12 +32,35 @@ class App extends Component {
     }
   }
   componentWillMount() {
+    this.initData()
+  }
+
+  initData = () => {
     const { fetchMenu } = this.props;
-    loggedIn() && fetchMenu();
+    const init = []
+    init.push(new Promise((resolve) => {
+      loggedIn() && fetchMenu(resolve);
+    }))
+
+    Promise.all(init)
+      .then(() => {
+        this.setState({ ready: true })
+      })
+  }
+
+  renderLoading() {
+    return (
+      <Loading />
+    )
   }
 
   render() {
+    const { ready } = this.state
     const { children } = this.props;
+
+    if (!ready) {
+      return this.renderLoading()
+    }
     return (
       <div className="page">
         {children}
