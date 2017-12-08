@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Divider } from 'antd'
 import TableView from '../TableView'
+import {
+  dateRender,
+  orderRender
+} from '../customTableRender'
 
 
 const propTypes = {
@@ -31,42 +36,47 @@ class UserTable extends Component {
   getColumns() {
     const columns = [
       {
-        title: '姓名',
+        title: '序号',
+        width: 80,
+        key: 'index',
+        render: orderRender
+      },
+      {
+        title: '用户名',
         width: 200,
-        dataIndex: 'name',
-        fixed: true,
-      },
-      {
-        title: '年龄',
-        width: 100,
-        dataIndex: 'age',
-      },
-      {
-        title: '地址',
-        dataIndex: 'address',
-        sorter: true,
-        width: 300,
-      },
-      {
-        title: '联系方式',
-        dataIndex: 'phone',
-        width: 150,
-        sorter: true,
+        dataIndex: 'username',
+        key: 'username',
       },
       {
         title: '邮箱',
         dataIndex: 'email',
+        key: 'email',
         width: 150,
       },
       {
         title: '性别',
         dataIndex: 'gender',
+        key: 'gender',
         width: 150,
       },
       {
-        title: 'Action',
+        title: '创建时间',
+        dataIndex: 'createTime',
+        key: 'createTime',
+        width: 150,
+        render: dateRender
+      },
+      {
+        title: '操作',
         width: 100,
-        render: () => <a href="#">action</a>,
+        key: 'action',
+        render: () => (
+          <span>
+            <a href="#">编辑</a>
+            <Divider type="vertical" />
+            <a href="#">删除</a>
+          </span>
+        ),
       },
     ];
     return columns;

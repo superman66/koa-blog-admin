@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Table, Pagination } from 'antd'
 
 import ReqeustStatus from '../constants/RequestStatus'
+import convertOrderType from '../utils/covertOrderType'
 
 const propTypes = {
   data: PropTypes.array.isRequired,
@@ -25,8 +26,6 @@ class TablveView extends Component {
       params: {
         page: 1,
         pageSize: 30,
-        filterColumn: '',
-        filterOrder: 'descend'
       }
     }
   }
@@ -75,14 +74,13 @@ class TablveView extends Component {
   handleTableChange = (pagination, filters, sorter) => {
     const params = {
       filterColumn: sorter.field,
-      filterOrder: sorter.order
+      filterOrder: convertOrderType(sorter.order)
     }
 
     this.setParams(params, this.loadTableData)
   }
 
   handleShowSizeChange = (current, pageSize) => {
-    console.log(current, pageSize);
     this.setState((prevState) => {
       return {
         pagination: { ...prevState.pagination, ...{ pageSize } }
@@ -104,7 +102,7 @@ class TablveView extends Component {
     const { pagination } = this.state;
     return (
       <Pagination
-        className="table-pagination"
+        className="custom-table-pagination"
         showSizeChanger
         onShowSizeChange={this.handleShowSizeChange}
         total={pagination.total}

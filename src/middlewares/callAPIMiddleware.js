@@ -21,16 +21,16 @@ function getRequestConfig(options) {
   }
 }
 
-function succesAlert(options, text) {
+function alert(options, text, type) {
   let { method = 'get' } = options
   method = method.toLowerCase()
   if (method === 'post' || method === 'patch' || method === 'delete') {
-    message.success(text)
+    if (type === 'success') {
+      message.success(text)
+    } else {
+      message.error(text)
+    }
   }
-}
-
-function errorAlert(text) {
-  message.error(text)
 }
 /**
  * actionType
@@ -83,7 +83,7 @@ function callAPIMiddleware({ dispatch, getState }) {
         success && success(data)
 
         // alert when request is done
-        succesAlert(options, message)
+        alert(options, message, 'success')
 
         return dispatch(Object.assign({}, payload, {
           type: actionType,
@@ -98,7 +98,7 @@ function callAPIMiddleware({ dispatch, getState }) {
         error && error(err)
 
         // error alert when catch request error
-        err.message && errorAlert(err.message)
+        alert(options, err.message, 'error')
 
         return dispatch(Object.assign({}, payload, {
           type: actionType,

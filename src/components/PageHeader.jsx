@@ -23,7 +23,7 @@ class PageHeader extends Component {
 
     const { collapsed, toggle } = this.props;
     return (
-      <Header style={{ background: '#fff', padding: 0 }}>
+      <Header style={{ background: '#fff', padding: '0 0 0 15px' }}>
         <Icon
           className="trigger"
           type={collapsed ? 'menu-unfold' : 'menu-fold'}
