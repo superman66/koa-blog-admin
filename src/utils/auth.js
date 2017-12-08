@@ -6,8 +6,9 @@ export function getUser() {
 }
 
 export function setUser(user) {
-  setItem('user', JSON.stringify(encodeURIComponent(user)))
+  setItem('user', encodeURIComponent(JSON.stringify(user)))
 }
+
 export function setToken(token) {
   setItem('token', token)
 }
@@ -22,6 +23,11 @@ export function removeToken() {
 
 export function loggedIn() {
   return !!getItem('token')
+}
+
+export function logout() {
+  removeToken()
+  removeItem('user')
 }
 
 export function redirectToLogin(nextState, replace, callback) {
