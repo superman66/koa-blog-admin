@@ -13,8 +13,8 @@ export default createReducer(initialState, {
   [types.LOGIN]: createRequestHandler((state, action) => {
     return {
       status: action.status,
-      user: action.response.user,
-      token: action.response.user.token,
+      // user: action.response.user || {},
+      // token: action.response.user.token || null,
     }
   })
 })

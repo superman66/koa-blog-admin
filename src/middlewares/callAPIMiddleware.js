@@ -1,4 +1,7 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import axios from 'axios'
+import { message } from 'antd'
 import ReqeustStatus from '../constants/RequestStatus'
 import { getToken } from '../utils/auth'
 
@@ -18,7 +21,17 @@ function getRequestConfig(options) {
   }
 }
 
+function succesAlert(options, text) {
+  let { method = 'get' } = options
+  method = method.toLowerCase()
+  if (method === 'post' || method === 'patch' || method === 'delete') {
+    message.success(text)
+  }
+}
 
+function errorAlert(text) {
+  message.error(text)
+}
 /**
  * actionType
  * options: { 参数
@@ -57,28 +70,45 @@ function callAPIMiddleware({ dispatch, getState }) {
 
     dispatch(Object.assign({}, payload, {
       status: ReqeustStatus.REQUEST,
-      type: `${actionType}_request`
+      type: `${actionType}`
     }))
 
 
     const requestConfig = getRequestConfig(options);
-    return axios.request(requestConfig).then((response) => {
-      success && success(response.data.data)
-      return dispatch(Object.assign({}, payload, {
-        status: ReqeustStatus.SUCCESS,
-        response: response.data.data,
-        type: actionType
-      }))
-    })
-      .catch((err) => {
-        error && error(err)
+    return axios.request(requestConfig)
+      .then((response) => {
+        const { data, message } = response.data
+
+        // success callback
+        success && success(data)
+
+        // alert when request is done
+        succesAlert(options, message)
+
         return dispatch(Object.assign({}, payload, {
-          status: ReqeustStatus.ERROR,
-          err,
-          type: `${actionType}_fail`
+          type: actionType,
+          status: ReqeustStatus.SUCCESS,
+          response: data,
+          message,
+
         }))
       })
+      .catch((err) => {
+        // error callback
+        error && error(err)
 
+        // error alert when catch request error
+        err.message && errorAlert(err.message)
+
+        return dispatch(Object.assign({}, payload, {
+          type: actionType,
+          status: ReqeustStatus.ERROR,
+          errors: err.errors,
+        }))
+      })
+      .then((response) => {
+        console.log(response);
+      })
   }
 }
 

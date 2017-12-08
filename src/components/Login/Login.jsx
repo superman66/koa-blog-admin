@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Icon, Input, Button } from 'antd'
+import { Form, Icon, Input, Button, Alert } from 'antd'
 
 import { setToken, setUser } from '../../utils/auth'
 import { goHomePage } from '../../utils/locationUtils'
@@ -15,6 +15,7 @@ class LoginForm extends Component {
     this.state = {
     }
   }
+
   handleSubmit = (e) => {
     const { onLogin } = this.props;
     e.preventDefault();

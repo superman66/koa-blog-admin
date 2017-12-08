@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { loggedIn } from '../utils/auth'
 
 const propTypes = {
   menus: PropTypes.array,
@@ -24,7 +25,7 @@ class App extends Component {
   }
   componentWillMount() {
     const { fetchMenu } = this.props;
-    fetchMenu && fetchMenu();
+    loggedIn() && fetchMenu();
   }
 
   render() {
