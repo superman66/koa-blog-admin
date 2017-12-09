@@ -30,11 +30,24 @@ class LoginForm extends Component {
     });
   }
 
+  renderErrorMsg() {
+    const { errors } = this.props
+    return Object.keys(errors).map((error) => {
+      return (<Alert message={errors[error]} type="error" showIcon style={{ marginBottom: 24 }} />)
+    })
+  }
+
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { errors, status } = this.props
+    const { getFieldDecorator } = this.props.form
     return (
       <div className="login-wrapper">
+
         <Form onSubmit={this.handleSubmit} className="login-form">
+          {
+            status === 'ERROR' &&
+            this.renderErrorMsg()
+          }
           <FormItem>
             {getFieldDecorator('username', {
               rules: [{ required: true, message: 'Please input your username!' }],

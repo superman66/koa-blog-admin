@@ -8,7 +8,8 @@ import { Login } from '../../components/Login';
 function mapState2Props(state) {
   const authState = state.store.auth;
   return {
-    status: authState.status
+    status: authState.status,
+    errors: authState.errors,
   };
 }
 
