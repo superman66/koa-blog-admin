@@ -98,7 +98,7 @@ function callAPIMiddleware({ dispatch, getState }) {
         error && error(err)
 
         // error alert when catch request error
-        alert(options, err.message, 'error')
+        // alert(options, err.message, 'error')
 
         return dispatch(Object.assign({}, payload, {
           type: actionType,

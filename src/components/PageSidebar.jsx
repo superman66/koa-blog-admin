@@ -43,14 +43,25 @@ class PageSidebar extends Component {
     })
   }
 
+  handleLink = (e) => {
+    const { router } = this.context
+    const link = e.target.dataset.link
+    router.push(link)
+  }
+
   renderMenuItem(menus) {
     return menus.map((item) => {
       return (
         <Menu.Item key={item.key}>
           {item.icon && <Icon type={item.icon} />}
-          <Link to={item.link}>
+          <span
+            role="button"
+            tabIndex="-1"
+            data-link={item.link}
+            onClick={this.handleLink}
+          >
             {item.name}
-          </Link>
+          </span>
         </Menu.Item>
       )
     })
@@ -65,7 +76,10 @@ class PageSidebar extends Component {
         collapsible
         collapsed={collapsed}
       >
-        <div className="logo" />
+        <div className="logo" >
+          <img src="../../static/logo.svg" alt="Superman Blog" />
+          Koa Blog
+        </div>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={selectedKey}>
           {this.renderMenuItem(menus)}
         </Menu>

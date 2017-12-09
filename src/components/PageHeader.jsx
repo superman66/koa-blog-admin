@@ -50,7 +50,7 @@ class PageHeader extends Component {
     return (
       <Dropdown overlay={menu}>
         <a className="ant-dropdown-link" href="#">
-          hello, {user.username}
+          <Icon type="user" /> {user.username}
         </a>
       </Dropdown>
     )
