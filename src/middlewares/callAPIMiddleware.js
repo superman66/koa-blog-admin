@@ -2,21 +2,33 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 import { message } from 'antd'
+import cloneDeep from 'lodash/cloneDeep'
+import pathToRegexp from 'path-to-regexp'
 import ReqeustStatus from '../constants/RequestStatus'
 import { getToken } from '../utils/auth'
 
 function getRequestConfig(options) {
   const { method = 'get', params, body, url } = options;
+  const match = pathToRegexp.parse(url)
+  const nextUrl = pathToRegexp.compile(url)(params)
+  const nextParams = cloneDeep(params)
+
+  match.forEach((item) => {
+    if (item instanceof Object && item.name in nextParams) {
+      delete nextParams[item.name]
+    }
+  })
+
   if (method.toLowerCase() === 'get') {
     return {
       method,
-      url,
+      url: nextUrl,
       params,
     }
   }
   return {
     method,
-    url,
+    url: nextUrl,
     data: body,
   }
 }
