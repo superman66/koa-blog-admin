@@ -23,7 +23,7 @@ function getRequestConfig(options) {
     return {
       method,
       url: nextUrl,
-      params,
+      nextParams,
     }
   }
   return {
