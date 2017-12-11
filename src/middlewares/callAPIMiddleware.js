@@ -34,9 +34,8 @@ function getRequestConfig(options) {
 }
 
 function alert(options, text, type) {
-  let { method = 'get' } = options
-  method = method.toLowerCase()
-  if (method === 'post' || method === 'patch' || method === 'delete') {
+  let { method = 'get', disableNotification = false } = options
+  if (['post', 'patch', 'delete'].indexOf(method.toLowerCase()) !== -1 && !disableNotification) {
     if (type === 'success') {
       message.success(text)
     } else {
@@ -53,8 +52,6 @@ function alert(options, text, type) {
  *    body
  * },
  * payload,
- * success  成功的回调
- * error 失败的回调
  * @param {*} param
  */
 function callAPIMiddleware({ dispatch, getState }) {
@@ -92,36 +89,30 @@ function callAPIMiddleware({ dispatch, getState }) {
       .then((response) => {
         const { data, message } = response.data
 
-        // success callback
-        success && success(data)
-
         // alert when request is done
         alert(options, message, 'success')
 
-        return dispatch(Object.assign({}, payload, {
+        dispatch(Object.assign({}, payload, {
           type: actionType,
           status: ReqeustStatus.SUCCESS,
           response: data,
           message,
 
         }))
+        return data
       })
       .catch((err) => {
-        // error callback
-        error && error(err)
 
         // error alert when catch request error
-        // alert(options, err.message, 'error')
+        alert(options, err.message, 'error')
 
-        return dispatch(Object.assign({}, payload, {
+        dispatch(Object.assign({}, payload, {
           type: actionType,
           status: ReqeustStatus.ERROR,
           errors: err.errors,
           response: {},
         }))
-      })
-      .then((response) => {
-        console.log(response);
+        return err
       })
   }
 }

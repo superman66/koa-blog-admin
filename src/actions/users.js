@@ -11,7 +11,7 @@ export function fetchUsers(params) {
   }
 }
 
-export function deleteUser(id, success) {
+export function deleteUser(id) {
   return {
     actionType: types.DELETE_USERS,
     options: {
@@ -20,7 +20,6 @@ export function deleteUser(id, success) {
       params: {
         id
       }
-    },
-    success
+    }
   }
 }

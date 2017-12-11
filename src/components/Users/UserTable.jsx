@@ -105,10 +105,11 @@ class UserTable extends Component {
 
   handleDelete = (record) => {
     const { onDeleteUser } = this.props
-    onDeleteUser(record._id, () => {
-      this.confirmRef.destroy()
-      this.table.reload()
-    })
+    onDeleteUser(record._id)
+      .then(() => {
+        this.confirmRef.destroy()
+        this.table.reload()
+      })
   }
 
   render() {

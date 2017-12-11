@@ -21,11 +21,14 @@ class LoginForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        onLogin(values, (data) => {
-          setUser(data.user)
-          setToken(data.token)
-          goHomePage()
-        })
+        onLogin(values)
+          .then((data) => {
+            setUser(data.user)
+            setToken(data.token)
+            goHomePage()
+          })
+          .catch((err) => {
+          })
       }
     });
   }
@@ -33,7 +36,15 @@ class LoginForm extends Component {
   renderErrorMsg() {
     const { errors } = this.props
     return Object.keys(errors).map((error) => {
-      return (<Alert message={errors[error]} type="error" showIcon style={{ marginBottom: 24 }} />)
+      return (
+        <Alert
+          key={error}
+          message={errors[error]}
+          type="error"
+          showIcon
+          style={{ marginBottom: 24 }}
+        />
+      )
     })
   }
 
