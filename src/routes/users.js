@@ -1,9 +1,20 @@
 import { redirectToLogin } from '../utils/auth'
 
 module.exports = {
-  onEnter: redirectToLogin,
   path: 'users',
-  getComponent(nextState, cb) {
-    cb(null, require('../containers/Users').UserTablePage)
-  }
+  indexRoute: { onEnter: (nextState, replace) => replace('/users/items') },
+  childRoutes: [
+    {
+      path: 'items',
+      getComponent(nextState, cb) {
+        cb(null, require('../containers/Users').UserTablePage)
+      },
+    },
+    {
+      onEnter: redirectToLogin,
+      path: 'edit/:id',
+      getComponent(nextState, cb) {
+        cb(null, require('../containers/Users').UserFormPage)
+      }
+    }]
 };

@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Spin } from 'antd'
+import { Layout, Spin } from 'antd'
 import { loggedIn } from '../utils/auth'
 import Loading from './Loading'
+import PageHeader from './PageHeader'
+import PageSidebar from './PageSidebar'
+import PageFooter from './PageFooter'
+
+const { Content } = Layout
 
 const propTypes = {
   menus: PropTypes.array,
@@ -23,8 +28,10 @@ class App extends Component {
     super(props)
     this.state = {
       ready: false,
+      collapsed: false
     }
   }
+
   getChildContext() {
     const { menus } = this.props;
     return {
@@ -48,6 +55,12 @@ class App extends Component {
       })
   }
 
+  handleOnToggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
+  }
+
   renderLoading() {
     return (
       <Loading />
@@ -55,7 +68,7 @@ class App extends Component {
   }
 
   render() {
-    const { ready } = this.state
+    const { ready, collapsed } = this.state
     const { children } = this.props;
 
     if (!ready) {
@@ -63,7 +76,19 @@ class App extends Component {
     }
     return (
       <div className="page">
-        {children}
+        <Layout className="ant-layout-has-sider table-content">
+          <PageSidebar collapsed={collapsed} />
+          <Layout>
+            <PageHeader
+              collapsed={collapsed}
+              toggle={this.handleOnToggle}
+            />
+            <Content style={{ margin: '24px 16px', padding: 24, background: '#fff', minHeight: 280 }}>
+              {children}
+            </Content>
+            <PageFooter />
+          </Layout>
+        </Layout>
       </div>
     );
   }

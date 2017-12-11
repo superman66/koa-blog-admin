@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Divider } from 'antd'
+import { Divider, Modal } from 'antd'
+import { Link } from 'react-router'
 import TableView from '../TableView'
 import {
   dateRender,
@@ -15,10 +16,15 @@ const propTypes = {
   onFetchUser: PropTypes.func
 }
 
+const contextTypes = {
+  router: PropTypes.object,
+}
+
 class UserTable extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+    };
   }
 
   componentDidMount() {
@@ -31,7 +37,6 @@ class UserTable extends Component {
       total: page.total || 0
     }
   }
-
 
   getColumns() {
     const columns = [
@@ -46,6 +51,7 @@ class UserTable extends Component {
         width: 200,
         dataIndex: 'username',
         key: 'username',
+        sorter: true,
       },
       {
         title: '邮箱',
@@ -64,17 +70,18 @@ class UserTable extends Component {
         dataIndex: 'createTime',
         key: 'createTime',
         width: 150,
+        sorter: true,
         render: dateRender
       },
       {
         title: '操作',
         width: 100,
         key: 'action',
-        render: () => (
+        render: (text, record) => (
           <span>
-            <a href="#">编辑</a>
-            <Divider type="vertical" />
-            <a href="#">删除</a>
+            {/* <Link to={`/users/edit/${record._id}`}>编辑</Link>
+            <Divider type="vertical" /> */}
+            <a onClick={() => this.openConfirmModal(record)}>删除</a>
           </span>
         ),
       },
@@ -85,6 +92,23 @@ class UserTable extends Component {
   loadTableData = (params) => {
     const { onFetchUser } = this.props;
     onFetchUser(params);
+  }
+
+  openConfirmModal = (record) => {
+    this.confirmRef = Modal.confirm({
+      title: '确认删除',
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => this.handleDelete(record)
+    });
+  }
+
+  handleDelete = (record) => {
+    const { onDeleteUser } = this.props
+    onDeleteUser(record._id, () => {
+      this.confirmRef.destroy()
+      this.table.reload()
+    })
   }
 
   render() {
@@ -106,4 +130,5 @@ class UserTable extends Component {
 }
 
 UserTable.propTypes = propTypes
+UserTable.contextTypes = contextTypes
 export default UserTable

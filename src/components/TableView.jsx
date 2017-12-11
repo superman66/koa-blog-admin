@@ -1,7 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Table, Pagination } from 'antd'
-
+import {
+  Table,
+  Pagination,
+  Button,
+} from 'antd'
+import _ from 'lodash'
 import ReqeustStatus from '../constants/RequestStatus'
 import convertOrderType from '../utils/covertOrderType'
 
@@ -9,7 +13,8 @@ const propTypes = {
   data: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired,
   status: PropTypes.string,
-  loadData: PropTypes.func
+  loadData: PropTypes.func,
+  options: PropTypes.object,
 }
 
 class TablveView extends Component {
@@ -40,7 +45,7 @@ class TablveView extends Component {
   }
 
   getParams() {
-    return this.state.params
+    return _(this.state.params).omitBy(_.isUndefined).value();
   }
 
   setParams(params, callback) {
@@ -51,6 +56,16 @@ class TablveView extends Component {
     }, () => {
       callback && callback();
     })
+  }
+  reload() {
+    this.setState({
+      params: { ...this.state.params, page: 1 }
+    }, this.update);
+  }
+
+  update() {
+    const { params } = this.state;
+    this.loadTableData(params);
   }
 
   showTotal = (total) => {
@@ -72,6 +87,7 @@ class TablveView extends Component {
   }
 
   handleTableChange = (pagination, filters, sorter) => {
+    console.log(sorter);
     const params = {
       filterColumn: sorter.field,
       filterOrder: convertOrderType(sorter.order)
@@ -115,10 +131,31 @@ class TablveView extends Component {
     );
   }
 
+  renderAddButton() {
+    const { addButton = {} } = this.props.options
+    const {
+      icon = 'plus',
+      text = '新建',
+      onClick,
+     } = addButton
+    return addButton.onClick ? (
+      <Button
+        type="primary"
+        icon={icon}
+        onClick={onClick}
+      >
+        {text}
+      </Button>
+    ) : null
+  }
+
   render() {
     const { data, columns, status } = this.props
     return (
       <div>
+        <div className="table-filter-sectino">
+          {this.renderAddButton()}
+        </div>
         <Table
           dataSource={data}
           columns={columns}

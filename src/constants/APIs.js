@@ -10,4 +10,5 @@ export const API_REGISTER = '/register'
 // user
 export const API_USERS = '/users';
 export const API_ADD_USER = '/users/:id'
+export const API_DELETE_USER = '/users/:id'
 

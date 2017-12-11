@@ -14,5 +14,8 @@ const initialState = {
 export default createReducer(initialState, {
   [types.FETCH_USERS]: createRequestHandler((state, action) => {
     return toTable(action)
+  }),
+  [types.DELETE_USERS]: createRequestHandler((state, action) => {
+    return action
   })
 })

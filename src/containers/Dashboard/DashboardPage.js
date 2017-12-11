@@ -3,7 +3,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../../actions/dashboard';
-import DashboardView from '../../components/Dashboard';
+import { Dashboard } from '../../components/Dashboard';
 
 
 function mapState2Props(state) {
@@ -17,4 +17,4 @@ function mapDispatch2Props(dispatch) {
   };
 }
 
-export default connect(mapState2Props, mapDispatch2Props)(DashboardView);
+export default connect(mapState2Props, mapDispatch2Props)(Dashboard);

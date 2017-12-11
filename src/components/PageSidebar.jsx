@@ -34,7 +34,7 @@ class PageSidebar extends Component {
     menus.forEach((menu) => {
       if (router.isActive({ pathname: menu.link })) {
         this.setState({
-          selectedKey: [menu.key]
+          selectedKey: [menu.link]
         })
       }
       if (menu.children.length) {
@@ -43,23 +43,17 @@ class PageSidebar extends Component {
     })
   }
 
-  handleLink = (e) => {
+  handleMenuCLick = ({ key }) => {
     const { router } = this.context
-    const link = e.target.dataset.link
-    router.push(link)
+    router.push(key)
   }
 
   renderMenuItem(menus) {
     return menus.map((item) => {
       return (
-        <Menu.Item key={item.key}>
+        <Menu.Item key={item.link}>
           {item.icon && <Icon type={item.icon} />}
-          <span
-            role="button"
-            tabIndex="-1"
-            data-link={item.link}
-            onClick={this.handleLink}
-          >
+          <span>
             {item.name}
           </span>
         </Menu.Item>
@@ -80,7 +74,12 @@ class PageSidebar extends Component {
           <img src="../../static/logo.svg" alt="Superman Blog" />
           Koa Blog
         </div>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={selectedKey}>
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={selectedKey}
+          onClick={this.handleMenuCLick}
+        >
           {this.renderMenuItem(menus)}
         </Menu>
       </Sider>

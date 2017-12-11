@@ -8,7 +8,7 @@ import ReqeustStatus from '../constants/RequestStatus'
 import { getToken } from '../utils/auth'
 
 function getRequestConfig(options) {
-  const { method = 'get', params, body, url } = options;
+  const { method = 'get', params = {}, body, url } = options;
   const match = pathToRegexp.parse(url)
   const nextUrl = pathToRegexp.compile(url)(params)
   const nextParams = cloneDeep(params)
@@ -23,7 +23,7 @@ function getRequestConfig(options) {
     return {
       method,
       url: nextUrl,
-      nextParams,
+      params: nextParams,
     }
   }
   return {
@@ -82,7 +82,8 @@ function callAPIMiddleware({ dispatch, getState }) {
 
     dispatch(Object.assign({}, payload, {
       status: ReqeustStatus.REQUEST,
-      type: `${actionType}`
+      type: `${actionType}`,
+      response: {},
     }))
 
 
@@ -116,6 +117,7 @@ function callAPIMiddleware({ dispatch, getState }) {
           type: actionType,
           status: ReqeustStatus.ERROR,
           errors: err.errors,
+          response: {},
         }))
       })
       .then((response) => {

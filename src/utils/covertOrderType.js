@@ -7,7 +7,7 @@ export default function convertOrderType(type) {
   if (type === 'ascend') {
     return 'asc'
   }
-  if (type === 'desend') {
+  if (type === 'descend') {
     return 'desc'
   }
   return 'asc'
