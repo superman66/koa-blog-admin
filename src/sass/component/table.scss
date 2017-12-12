@@ -1,5 +1,8 @@
 .table-filter-section{
   margin-bottom: 14px;
+  .search{
+    float: right;
+  }
 }
 .ant-pagination{
   &.custom-table-pagination{

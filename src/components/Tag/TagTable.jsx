@@ -49,6 +49,9 @@ class TagTable extends Component {
       addButton: {
         onClick: this.openAddOrUpdateModal
       },
+      searchInput: {
+        onSearch: this.handleSearch
+      },
       total: page.total || 0
     }
   }
@@ -159,6 +162,11 @@ class TagTable extends Component {
   afterSubmit = () => {
     this.hideAddOrUpdateModal()
     this.table.reload()
+  }
+
+  handleSearch = (value) => {
+    const nextParms = { ...this.table.getParams(), ...{ word: value } }
+    this.loadTableData(nextParms)
   }
 
   render() {

@@ -4,10 +4,13 @@ import {
   Table,
   Pagination,
   Button,
+  Input,
 } from 'antd'
 import _ from 'lodash'
 import ReqeustStatus from '../../constants/RequestStatus'
 import convertOrderType from '../../utils/covertOrderType'
+
+const Search = Input.Search
 
 const propTypes = {
   data: PropTypes.array.isRequired,
@@ -15,6 +18,10 @@ const propTypes = {
   status: PropTypes.string,
   loadData: PropTypes.func,
   options: PropTypes.object,
+}
+
+const defaultProps = {
+  options: {}
 }
 
 class TablveView extends Component {
@@ -87,7 +94,6 @@ class TablveView extends Component {
   }
 
   handleTableChange = (pagination, filters, sorter) => {
-    console.log(sorter);
     const params = {
       filterColumn: sorter.field,
       filterOrder: convertOrderType(sorter.order)
@@ -130,6 +136,25 @@ class TablveView extends Component {
       />
     );
   }
+  renderSearch() {
+    const { searchInput = {} } = this.props.options;
+    const {
+      placeholder = 'input search text',
+      style = { width: 200 },
+      onSearch
+  } = searchInput
+
+    return (
+      Object.keys(searchInput).length !== 0 &&
+        <Search
+          className="search"
+          placeholder={placeholder}
+          onSearch={onSearch}
+          style={style}
+          enterButton
+        />
+    )
+  }
 
   renderAddButton() {
     const { addButton = {} } = this.props.options
@@ -138,7 +163,7 @@ class TablveView extends Component {
       text = '新建',
       onClick,
      } = addButton
-    return addButton.onClick ? (
+    return Object.keys(addButton).length !== 0 ? (
       <Button
         type="primary"
         icon={icon}
@@ -155,6 +180,7 @@ class TablveView extends Component {
       <div>
         <div className="table-filter-section">
           {this.renderAddButton()}
+          {this.renderSearch()}
         </div>
         <Table
           dataSource={data}
@@ -171,5 +197,6 @@ class TablveView extends Component {
 }
 
 TablveView.propTypes = propTypes
+TablveView.defautlProps = defaultProps
 
 export default TablveView
