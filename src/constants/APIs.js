@@ -12,3 +12,9 @@ export const API_USERS = '/users';
 export const API_ADD_USER = '/users/:id'
 export const API_DELETE_USER = '/users/:id'
 
+// category
+export const API_CATEGORIES = '/categories'
+export const API_ADD_CATEGORY = '/categories'
+export const API_UPDATE_CATEGORY = '/categories/:id'
+export const API_DELETE_CATEGORY = '/categories/:id'
+

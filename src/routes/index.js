@@ -1,12 +1,17 @@
-module.exports = {
+import users from './users'
+import dashboard from './dashboard'
+import category from './category'
+
+export default {
   childRoutes: [{
     path: '/',
     // onEnter: redirectToLogin,
     component: require('../containers/Index').default,
     indexRoute: { onEnter: (nextState, replace) => replace('/dashboard') },
     childRoutes: [
-      require('./users'),
-      require('./dashboard')
+      users,
+      dashboard,
+      category
     ]
   }, {
     path: 'login',

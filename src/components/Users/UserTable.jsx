@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Divider, Modal } from 'antd'
 import { Link } from 'react-router'
-import TableView from '../TableView'
+import TableView from '../Common/TableView'
 import {
   dateRender,
   orderRender
-} from '../customTableRender'
+} from '../Common/CustomTableRender'
 
 
 const propTypes = {

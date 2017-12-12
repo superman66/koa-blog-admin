@@ -1,6 +1,6 @@
 import { redirectToLogin } from '../utils/auth'
 
-module.exports = {
+export default {
   path: 'users',
   indexRoute: { onEnter: (nextState, replace) => replace('/users/items') },
   childRoutes: [

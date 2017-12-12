@@ -104,7 +104,7 @@ function callAPIMiddleware({ dispatch, getState }) {
       .catch((err) => {
 
         // error alert when catch request error
-        alert(options, err.message, 'error')
+        err.message && alert(options, err.message, 'error')
 
         dispatch(Object.assign({}, payload, {
           type: actionType,
@@ -112,7 +112,7 @@ function callAPIMiddleware({ dispatch, getState }) {
           errors: err.errors,
           response: {},
         }))
-        return err
+        return Promise.reject(err)
       })
   }
 }

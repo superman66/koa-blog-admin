@@ -4,6 +4,7 @@ import { Form, Icon, Input, Button, Alert } from 'antd'
 
 import { setToken, setUser } from '../../utils/auth'
 import { goHomePage } from '../../utils/locationUtils'
+import FormErrorMsg from '../Common/FormErrorMsg'
 
 const FormItem = Form.Item;
 const propTypes = {}

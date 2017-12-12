@@ -46,7 +46,7 @@ class App extends Component {
     const { fetchMenu } = this.props;
     const init = []
     init.push(new Promise((resolve) => {
-      loggedIn() && fetchMenu(resolve);
+      loggedIn() && fetchMenu().then(resolve);
     }))
 
     Promise.all(init)
