@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Modal, Form, Input, Icon, Alert } from 'antd'
+import { Modal, Form, Input, Alert } from 'antd'
 
 const FormItem = Form.Item
 const propTypes = {
@@ -13,7 +13,7 @@ const propTypes = {
 }
 
 // 需要手动清空的数据 form表单数据、errors数据
-class CategoryModal extends Component {
+class TagModal extends Component {
 
   handleSubmit = (e) => {
     const { submit, formData, form } = this.props;
@@ -51,7 +51,7 @@ class CategoryModal extends Component {
   render() {
     const { visible, formData } = this.props
     const { getFieldDecorator } = this.props.form
-    const title = formData._id ? '编辑分类' : '新建分类'
+    const title = formData._id ? '编辑标签' : '新建标签'
     return (
       <Modal
         key="modal"
@@ -69,9 +69,9 @@ class CategoryModal extends Component {
           <FormItem>
             {getFieldDecorator('name', {
               initialValue: formData.name,
-              rules: [{ required: true, message: '分类名称不能为空' }],
+              rules: [{ required: true, message: '标签名称不能为空' }],
             })(
-              <Input placeholder="分类名称" />
+              <Input placeholder="标签名称" />
               )}
           </FormItem>
         </Form>
@@ -80,8 +80,8 @@ class CategoryModal extends Component {
   }
 }
 
-const WrappedNormalCategoryModalForm = Form.create()(CategoryModal)
-CategoryModal.propTypes = propTypes
+const WrappedNormalTagModalForm = Form.create()(TagModal)
+TagModal.propTypes = propTypes
 
 
-export default WrappedNormalCategoryModalForm
+export default WrappedNormalTagModalForm

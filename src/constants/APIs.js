@@ -18,3 +18,8 @@ export const API_ADD_CATEGORY = '/categories'
 export const API_UPDATE_CATEGORY = '/categories/:id'
 export const API_DELETE_CATEGORY = '/categories/:id'
 
+// tags
+export const API_TAGS = '/tags'
+export const API_ADD_TAG = '/tags'
+export const API_UPDATE_TAG = '/tags/:id'
+export const API_DELETE_TAG = 'tags/:id'

@@ -13,3 +13,9 @@ export const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
 export const ADD_CATEGORY = 'ADD_CATEGORY'
 export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
 export const DELETE_CATEGORY = 'DELETE_CATEGORY'
+
+// tags
+export const FETCH_TAGS = 'FETCH_TAGS'
+export const ADD_TAG = 'ADD_TAG'
+export const UPDATE_TAG = 'UPDATE_TAG'
+export const DELETE_TAG = 'DELETE_TAG'

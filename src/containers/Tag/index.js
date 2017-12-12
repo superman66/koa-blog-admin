@@ -1,0 +1,1 @@
+export TagTablePage from './TagTablePage'

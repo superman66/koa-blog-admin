@@ -6,21 +6,21 @@ import {
   dateRender,
   orderRender
 } from '../Common/CustomTableRender'
-import CategoryModal from './CategoryModal'
+import TagModal from './TagModal'
 
 const propTypes = {
-  categoriesList: PropTypes.array,
+  tagList: PropTypes.array,
   page: PropTypes.object,
   status: PropTypes.string,
   errors: PropTypes.object,
-  fetchCategories: PropTypes.func,
-  addCategory: PropTypes.func,
-  updateCategory: PropTypes.func,
-  deleteCategory: PropTypes.func,
+  fetchTags: PropTypes.func,
+  addTag: PropTypes.func,
+  updateTag: PropTypes.func,
+  deleteTag: PropTypes.func,
 }
 
 
-class CategoryTable extends Component {
+class TagTable extends Component {
 
   constructor(props) {
     super(props);
@@ -108,14 +108,14 @@ class CategoryTable extends Component {
     });
   }
   loadTableData = (params) => {
-    const { fetchCategories } = this.props
-    fetchCategories(params)
+    const { fetchTags } = this.props
+    fetchTags(params)
   }
 
   handleDelete = (record) => {
-    const { deleteCategory } = this.props
+    const { deleteTag } = this.props
 
-    deleteCategory(record._id)
+    deleteTag(record._id)
       .then(() => {
         this.delRef.destroy()
         this.table.reload()
@@ -139,17 +139,16 @@ class CategoryTable extends Component {
   }
 
   handleSubmit = (id, values, cb) => {
-    const { addCategory, updateCategory } = this.props
-    // update category when id exist
+    const { addTag, updateTag } = this.props
     if (id) {
-      updateCategory(id, values)
+      updateTag(id, values)
         .then(() => {
           this.afterSubmit()
-          // modal 提交成功后的回调，要重置 Modal 表单的数据，保证每次打开modal都是最新的
+          // 提交成功后的回调，要重置 Modal 表单的数据，保证每次打开modal都是最新的
           cb()
         })
     } else {
-      addCategory(values)
+      addTag(values, cb)
         .then(() => {
           this.afterSubmit()
           cb()
@@ -165,17 +164,17 @@ class CategoryTable extends Component {
   render() {
     const { visible, values, errors } = this.state
     const {
-      categoriesList,
+      tagList,
       status,
       page,
-      addCategory,
-      updateCategory,
+      addTag,
+      updateTag,
      } = this.props
     return (
       <div>
         <TableView
           status={status}
-          data={categoriesList}
+          data={tagList}
           page={page}
           options={this.getTableOptions()}
           loadData={this.loadTableData}
@@ -185,7 +184,7 @@ class CategoryTable extends Component {
           }}
         />
 
-        <CategoryModal
+        <TagModal
           status={status}
           formData={values}
           errors={errors}
@@ -199,7 +198,7 @@ class CategoryTable extends Component {
 }
 
 
-CategoryTable.propTypes = propTypes
+TagTable.propTypes = propTypes
 
 
-export default CategoryTable
+export default TagTable
