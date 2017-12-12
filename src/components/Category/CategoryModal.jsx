@@ -16,11 +16,13 @@ const propTypes = {
 class CategoryModal extends Component {
 
   handleSubmit = (e) => {
-    const { submit } = this.props;
+    const { submit, form } = this.props;
     e.preventDefault();
-    this.props.form.validateFields((err, values) => {
+    form.validateFields((err, values) => {
       if (!err) {
-        submit(this.props.values._id, values)
+        submit(this.props.values._id, values, () => {
+          this.handleReset()
+        })
       }
     });
   }
@@ -28,6 +30,12 @@ class CategoryModal extends Component {
   handleCancel = () => {
     const { hideModal } = this.props
     hideModal()
+    this.handleReset()
+  }
+
+  handleReset = () => {
+    const { form } = this.props
+    form.resetFields()
   }
 
   renderErrorMsg() {
@@ -50,6 +58,7 @@ class CategoryModal extends Component {
     const { getFieldDecorator } = this.props.form
     return (
       <Modal
+        key="modal"
         title="Modal"
         visible={visible}
         onOk={this.handleSubmit}

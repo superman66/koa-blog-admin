@@ -121,18 +121,20 @@ class CategoryTable extends Component {
     })
   }
 
-  handleSubmit = (id, values) => {
+  handleSubmit = (id, values, cb) => {
     const { addCategory, updateCategory } = this.props
     // update category when id exist
     if (id) {
       updateCategory(id, values)
         .then(() => {
           this.afterSubmit()
+          cb()
         })
     } else {
       addCategory(values)
         .then(() => {
           this.afterSubmit()
+          cb()
         })
     }
   }
