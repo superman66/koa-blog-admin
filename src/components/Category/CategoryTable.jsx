@@ -26,13 +26,21 @@ class CategoryTable extends Component {
     super(props);
     this.state = {
       visible: false,
-      values: {}
+      values: {},
+      errors: props.errors
     }
   }
 
-
   componentDidMount() {
     this.loadTableData(this.table.getParams())
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors !== this.props.errors) {
+      this.setState({
+        errors: nextProps.errors
+      })
+    }
   }
 
   getTableOptions() {
@@ -117,40 +125,49 @@ class CategoryTable extends Component {
   openAddOrUpdateModal = (record = {}) => {
     this.setState({
       visible: true,
-      values: record
+      values: record,
+      errors: {}
     })
   }
 
-  handleSubmit = (id, values, cb) => {
+  hideAddOrUpdateModal = () => {
+    this.setState({
+      visible: false,
+      errors: {},
+      values: {}
+    })
+  }
+
+  handleSubmit = (id, values) => {
     const { addCategory, updateCategory } = this.props
     // update category when id exist
     if (id) {
       updateCategory(id, values)
         .then(() => {
           this.afterSubmit()
-          cb()
         })
     } else {
       addCategory(values)
         .then(() => {
           this.afterSubmit()
-          cb()
         })
     }
   }
+
   afterSubmit = () => {
-    this.handleHideModal()
+    this.hideAddOrUpdateModal()
     this.table.reload()
-  }
-  handleHideModal = () => {
-    this.setState({
-      visible: false,
-    })
   }
 
   render() {
-    const { visible, values } = this.state
-    const { categoriesList, status, page, errors } = this.props
+    const { visible, values, errors } = this.state
+    const {
+      categoriesList,
+      status,
+      page,
+      addCategory,
+      updateCategory,
+     } = this.props
     return (
       <div>
         <TableView
@@ -167,11 +184,11 @@ class CategoryTable extends Component {
 
         <CategoryModal
           status={status}
-          values={values}
+          formData={values}
           errors={errors}
           visible={visible}
-          hideModal={this.handleHideModal}
           submit={this.handleSubmit}
+          hideModal={this.hideAddOrUpdateModal}
         />
       </div>
     )
