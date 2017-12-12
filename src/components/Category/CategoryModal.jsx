@@ -8,8 +8,7 @@ const propTypes = {
   formData: PropTypes.object,
   errors: PropTypes.object,
   form: PropTypes.object,
-  addCategory: PropTypes.func,
-  updateCategory: PropTypes.func,
+  submit: PropTypes.func,
   hideModal: PropTypes.func
 }
 
