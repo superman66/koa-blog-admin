@@ -1,7 +1,7 @@
 /**
  * action 示例模板
  */
-import * as types from '../constants/ActionTypes'
+import types from '../constants/ActionTypes'
 import * as apis from '../constants/APIs'
 
 /**   action 参数

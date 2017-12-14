@@ -1,26 +1,30 @@
-// auth
-export const LOGIN = 'LOGIN'
+import createConstants from '../utils/createConstants'
 
-// common
-export const FETCH_MENUS = 'FETCH_MENUS';
-
-// users
-export const FETCH_USERS = 'FETCH_USERS'
-export const DELETE_USERS = 'DELETE_USERS'
-
-// category
-export const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
-export const ADD_CATEGORY = 'ADD_CATEGORY'
-export const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
-export const DELETE_CATEGORY = 'DELETE_CATEGORY'
-
-// tags
-export const FETCH_TAGS = 'FETCH_TAGS'
-export const ADD_TAG = 'ADD_TAG'
-export const UPDATE_TAG = 'UPDATE_TAG'
-export const DELETE_TAG = 'DELETE_TAG'
-
-// comment
-export const FETCH_COMMENTS = 'FETCH_COMMENTS'
-export const REVIEW_COMMENT = 'REVIEW_COMMENT'
-export const DELETE_COMMENT = 'DELETE_COMMENT'
+export default createConstants(
+  // auth
+  'LOGIN',
+  // menu
+  'FETCH_MENUS',
+  // users
+  'FETCH_USERS',
+  'DELETE_USERS',
+  // category
+  'FETCH_CATEGORIES',
+  'ADD_CATEGORY',
+  'UPDATE_CATEGORY',
+  'DELETE_CATEGORY',
+  // tags
+  'FETCH_TAGS',
+  'ADD_TAG',
+  'UPDATE_TAG',
+  'DELETE_TAG',
+  // comments
+  'FETCH_COMMENTS',
+  'REVIEW_COMMENT',
+  'DELETE_COMMENT',
+  // post
+  'FETCH_POSTS',
+  'UPDATE_POST',
+  'CHANGE_STATUS_POST',
+  'DELETE_POST',
+)

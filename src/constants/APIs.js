@@ -28,3 +28,10 @@ export const API_DELETE_TAG = 'tags/:id'
 export const API_COMMENTS = '/comments'
 export const API_REVIEW_COMMENT = '/comments/:id' // 审核评论
 export const API_DELETE_COMMENT = '/comments/:id'
+
+// post
+export const API_POSTS = '/comments'
+export const API_ADD_POST = '/comments'
+export const API_CHANGE_POST_STATUS = '/comments/:id'
+export const API_UPDATE_POST = '/comments/:id'
+export const API_DELETE_POST = '/comments/:id'

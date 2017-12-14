@@ -1,5 +1,5 @@
 
-import * as types from '../constants/ActionTypes'
+import types from '../constants/ActionTypes'
 import * as apis from '../constants/APIs'
 
 

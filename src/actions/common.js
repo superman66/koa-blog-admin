@@ -1,9 +1,9 @@
 import * as APIs from '../constants/APIs'
-import { FETCH_MENUS } from '../constants/ActionTypes'
+import types from '../constants/ActionTypes'
 
 export function fetchMenus(cb) {
   return {
-    actionType: FETCH_MENUS,
+    actionType: types.FETCH_MENUS,
     options: {
       url: APIs.API_MENUS
     },

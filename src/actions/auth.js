@@ -1,4 +1,4 @@
-import * as types from '../constants/ActionTypes'
+import types from '../constants/ActionTypes'
 import * as APIs from '../constants/APIs'
 
 export function login(data) {
