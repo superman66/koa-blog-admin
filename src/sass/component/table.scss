@@ -1,11 +1,13 @@
-.table-filter-section{
+.table-filter-section {
   margin-bottom: 14px;
-  .search{
+  overflow: hidden;
+  .search {
     float: right;
   }
 }
-.ant-pagination{
-  &.custom-table-pagination{
+
+.ant-pagination {
+  &.custom-table-pagination {
     text-align: center;
     margin-top: 25px;
   }

@@ -34,6 +34,10 @@ class UserTable extends Component {
   getTableOptions() {
     const { page } = this.props;
     return {
+      searchInput: {
+        placeholder: '用户名/邮箱',
+        onSearch: this.handleSearch
+      },
       total: page.total || 0
     }
   }
@@ -110,6 +114,11 @@ class UserTable extends Component {
         this.confirmRef.destroy()
         this.table.reload()
       })
+  }
+
+  handleSearch = (value) => {
+    const nextParms = { ...this.table.getParams(), ...{ word: value } }
+    this.loadTableData(nextParms)
   }
 
   render() {

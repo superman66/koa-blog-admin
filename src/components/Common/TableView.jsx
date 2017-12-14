@@ -95,8 +95,8 @@ class TablveView extends Component {
 
   handleTableChange = (pagination, filters, sorter) => {
     const params = {
-      filterColumn: sorter.field,
-      filterOrder: convertOrderType(sorter.order)
+      orderColumn: sorter.field,
+      orderType: convertOrderType(sorter.order)
     }
 
     this.setParams(params, this.loadTableData)
@@ -139,20 +139,20 @@ class TablveView extends Component {
   renderSearch() {
     const { searchInput = {} } = this.props.options;
     const {
-      placeholder = 'input search text',
+      placeholder = '',
       style = { width: 200 },
       onSearch
   } = searchInput
 
     return (
       Object.keys(searchInput).length !== 0 &&
-        <Search
-          className="search"
-          placeholder={placeholder}
-          onSearch={onSearch}
-          style={style}
-          enterButton
-        />
+      <Search
+        className="search"
+        placeholder={placeholder}
+        onSearch={value => onSearch(value.trim())}
+        style={style}
+        enterButton
+      />
     )
   }
 

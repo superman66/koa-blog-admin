@@ -50,6 +50,7 @@ class TagTable extends Component {
         onClick: this.openAddOrUpdateModal
       },
       searchInput: {
+        placeholder: '标签名称',
         onSearch: this.handleSearch
       },
       total: page.total || 0

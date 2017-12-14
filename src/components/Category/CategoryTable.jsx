@@ -49,6 +49,10 @@ class CategoryTable extends Component {
       addButton: {
         onClick: this.openAddOrUpdateModal
       },
+      searchInput: {
+        placeholder: '名称',
+        onSearch: this.handleSearch
+      },
       total: page.total || 0
     }
   }
@@ -160,6 +164,11 @@ class CategoryTable extends Component {
   afterSubmit = () => {
     this.hideAddOrUpdateModal()
     this.table.reload()
+  }
+
+  handleSearch = (value) => {
+    const nextParms = { ...this.table.getParams(), ...{ word: value } }
+    this.loadTableData(nextParms)
   }
 
   render() {
