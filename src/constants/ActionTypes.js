@@ -19,3 +19,8 @@ export const FETCH_TAGS = 'FETCH_TAGS'
 export const ADD_TAG = 'ADD_TAG'
 export const UPDATE_TAG = 'UPDATE_TAG'
 export const DELETE_TAG = 'DELETE_TAG'
+
+// comment
+export const FETCH_COMMENTS = 'FETCH_COMMENTS'
+export const REVIEW_COMMENT = 'REVIEW_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT'

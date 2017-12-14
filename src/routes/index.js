@@ -2,6 +2,7 @@ import users from './users'
 import dashboard from './dashboard'
 import category from './category'
 import tag from './tag'
+import comment from './comment'
 
 export default {
   childRoutes: [{
@@ -13,7 +14,8 @@ export default {
       users,
       dashboard,
       category,
-      tag
+      tag,
+      comment
     ]
   }, {
     path: 'login',

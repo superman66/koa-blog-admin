@@ -1,0 +1,1 @@
+export CommentTablePage from './CommentTablePage'

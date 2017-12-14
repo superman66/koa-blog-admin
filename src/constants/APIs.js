@@ -23,3 +23,8 @@ export const API_TAGS = '/tags'
 export const API_ADD_TAG = '/tags'
 export const API_UPDATE_TAG = '/tags/:id'
 export const API_DELETE_TAG = 'tags/:id'
+
+// comment
+export const API_COMMENTS = '/comments'
+export const API_REVIEW_COMMENT = '/comments/:id' // 审核评论
+export const API_DELETE_COMMENT = '/comments/:id'

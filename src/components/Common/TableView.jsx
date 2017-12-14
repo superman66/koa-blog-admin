@@ -140,7 +140,7 @@ class TablveView extends Component {
     const { searchInput = {} } = this.props.options;
     const {
       placeholder = '',
-      style = { width: 200 },
+      style = { width: 250 },
       onSearch
   } = searchInput
 
