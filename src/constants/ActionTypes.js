@@ -24,7 +24,8 @@ export default createConstants(
   'DELETE_COMMENT',
   // post
   'FETCH_POSTS',
+  'ADD_POST',
   'UPDATE_POST',
-  'CHANGE_STATUS_POST',
+  'CHANGE_POST_STATUS',
   'DELETE_POST',
 )

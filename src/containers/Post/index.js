@@ -1,0 +1,1 @@
+export PostTablePage from './PostTablePage'
