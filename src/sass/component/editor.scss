@@ -1,0 +1,22 @@
+$editorCalcHeight: calc(100vh - 270px);
+.post-editor-wrapper {
+  min-height: $editorCalcHeight;
+  .post-title {
+    .title {
+      width: 100%;
+    }
+  }
+  .post-content {
+    .editor {
+      background: #f5f5f5;
+      min-height: $editorCalcHeight;
+    }
+    .preview {
+      float: left;
+      width: 50%;
+      overflow: auto;
+      padding: 25px;
+      height: $editorCalcHeight;
+    }
+  }
+}

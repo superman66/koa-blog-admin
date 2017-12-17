@@ -24,8 +24,10 @@ export default createConstants(
   'DELETE_COMMENT',
   // post
   'FETCH_POSTS',
+  'FETCH_POST_BY_ID',
   'ADD_POST',
   'UPDATE_POST',
   'CHANGE_POST_STATUS',
   'DELETE_POST',
+  'RESET_POST',   // 重置post文章数据
 )

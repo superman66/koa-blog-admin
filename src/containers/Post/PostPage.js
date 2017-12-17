@@ -6,15 +6,14 @@ import {
 } from 'react-redux'
 import * as actionCreators from '../../actions/post'
 import {
-  PostTable
+  Post
 } from '../../components/Post'
 
 function mapState2Props(state) {
   const currentState = state.store.post
   return {
     status: currentState.status,
-    postList: currentState.items,
-    page: currentState.page,
+    post: currentState.post,
     errors: currentState.errors
   }
 }
@@ -22,12 +21,10 @@ function mapState2Props(state) {
 function mapDispatch2Props(dispatch) {
   const actions = bindActionCreators(actionCreators, dispatch)
   return {
-    fetchPosts: actions.fetchPosts,
+    fetchPostById: actions.fetchPostById,
+    addPost: actions.addPost,
     updatePost: actions.updatePost,
-    changePostStatus: actions.changePostStatus,
-    deletePost: actions.deletePost,
-    resetPost: actions.resetPost,
   }
 }
 
-export default connect(mapState2Props, mapDispatch2Props)(PostTable)
+export default connect(mapState2Props, mapDispatch2Props)(Post)

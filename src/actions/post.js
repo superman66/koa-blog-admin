@@ -11,6 +11,18 @@ export function fetchPosts(params) {
   }
 }
 
+export function fetchPostById(id) {
+  return {
+    actionType: types.FETCH_POST_BY_ID,
+    options: {
+      url: apis.API_POST_BY_ID,
+      params: {
+        id
+      }
+    }
+  }
+}
+
 export function addPost(body) {
   return {
     actionType: types.ADD_POST,
@@ -60,5 +72,12 @@ export function deletePost(id) {
         id
       }
     }
+  }
+}
+
+
+export function resetPost() {
+  return {
+    type: types.RESET_POST,
   }
 }

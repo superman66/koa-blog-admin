@@ -31,6 +31,7 @@ export const API_DELETE_COMMENT = '/comments/:id'
 
 // post
 export const API_POSTS = '/posts'
+export const API_POST_BY_ID = '/posts/:id'
 export const API_ADD_POST = '/posts'
 export const API_CHANGE_POST_STATUS = '/posts/:id'
 export const API_UPDATE_POST = '/posts/:id'

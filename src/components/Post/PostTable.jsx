@@ -4,7 +4,8 @@ import { Divider, Modal } from 'antd'
 import TableView from '../Common/TableView'
 import {
   dateRender,
-  orderRender
+  orderRender,
+  PostStatusRender,
 } from '../Common/CustomTableRender'
 
 const propTypes = {
@@ -13,12 +14,14 @@ const propTypes = {
   status: PropTypes.string,
   errors: PropTypes.object,
   fetchPosts: PropTypes.func,
-  addPost: PropTypes.func,
+  resetPost: PropTypes.func,
   updatePost: PropTypes.func,
   deletePost: PropTypes.func,
   changePostStatus: PropTypes.func,
 }
-
+const contextTypes = {
+  router: PropTypes.object,
+}
 
 class PostTable extends Component {
 
@@ -47,7 +50,8 @@ class PostTable extends Component {
     const { page } = this.props;
     return {
       addButton: {
-        onClick: this.openAddOrUpdateModal
+        text: '写文章',
+        onClick: this.goAddPost
       },
       searchInput: {
         placeholder: '名称',
@@ -85,6 +89,7 @@ class PostTable extends Component {
         width: 120,
         dataIndex: 'status',
         key: 'status',
+        render: PostStatusRender,
       },
       {
         title: '分类',
@@ -122,13 +127,26 @@ class PostTable extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a onClick={() => this.openAddOrUpdateModal(record)}>编辑</a>
+            <a onClick={() => this.goEditPost(record)}>编辑</a>
             <Divider type="vertical" />
             <a onClick={() => this.openDeleteModal(record)}>删除</a>
           </span>
         ),
       },
     ]
+  }
+  goAddPost = () => {
+    const { router } = this.context
+    const { resetPost } = this.props
+    resetPost()
+    router.push('/post/add')
+  }
+
+  goEditPost = (record) => {
+    const { router } = this.context
+    const { resetPost } = this.props
+    resetPost()
+    router.push(`/post/edit/${record._id}`)
   }
 
   openDeleteModal = (record) => {
@@ -139,6 +157,7 @@ class PostTable extends Component {
       onOk: () => this.handleDelete(record)
     });
   }
+
   loadTableData = (params) => {
     const { fetchPosts } = this.props
     fetchPosts(params)
@@ -187,6 +206,7 @@ class PostTable extends Component {
 
 
 PostTable.propTypes = propTypes
+PostTable.contextTypes = contextTypes
 
 
 export default PostTable
