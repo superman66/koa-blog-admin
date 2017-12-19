@@ -19,7 +19,7 @@ export default createReducer(initialState, {
   }),
   [types.FETCH_POST_BY_ID]: createRequestHandler((state, action) => {
     return {
-      post: action.response.post,
+      post: action.response.post || {},
       status: action.status,
       errors: action.errors || {}
     }

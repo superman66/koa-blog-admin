@@ -22,6 +22,7 @@ $button-gutter: 4px;
 .MDEditor_toolbar {
   margin-bottom: $button-gutter;
   margin-top: $button-gutter;
+  display: none;
 }
 
 .MDEditor_toolbarButton {

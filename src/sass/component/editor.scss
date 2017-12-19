@@ -2,14 +2,25 @@ $editorCalcHeight: calc(100vh - 270px);
 .post-editor-wrapper {
   min-height: $editorCalcHeight;
   .post-title {
+    overflow: hidden;
+    .left-box {
+      float: left;
+      width: 100%;
+    }
+    .right-box {
+      position: absolute;
+      right: 40px;
+    }
     .title {
       width: 100%;
     }
   }
   .post-content {
+    background: #f5f5f5;
     .editor {
-      background: #f5f5f5;
       min-height: $editorCalcHeight;
+      border-right: 1px solid #ddd;
+      padding: 25px;
     }
     .preview {
       float: left;
@@ -17,6 +28,29 @@ $editorCalcHeight: calc(100vh - 270px);
       overflow: auto;
       padding: 25px;
       height: $editorCalcHeight;
+    }
+  }
+}
+
+.suggest-tag-wrapper {
+  position: relative;
+  .suggest-tag-list {
+    display: none;
+    position: absolute;
+    background: #fff;
+    z-index: 990;
+    border: 1px solid #ddd;
+    width: 150px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    li {
+      padding: 8px 10px;
+      cursor: pointer;
+      width: 100%;
+      &:hover, &:active{
+        color: #1890ff;
+      }
     }
   }
 }
