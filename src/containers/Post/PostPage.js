@@ -16,7 +16,7 @@ function mapState2Props(state) {
   const categoryState = state.store.category
   const tag = state.store.tag
   return {
-    tagList: tag.items,
+    tags: tag.items,
     categoryList: categoryState.items,
     status: currentState.status,
     post: currentState.post,

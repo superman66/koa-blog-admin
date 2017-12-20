@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import {
   Spin,
   Form,
+  Icon,
   Input,
   Row,
   Col,
   Button,
   Modal,
   Tag,
-  Divider,
+  AutoComplete,
 } from 'antd'
 import _ from 'lodash'
 import Editor from 'react-md-editor'
@@ -20,7 +21,7 @@ const { TextArea } = Input;
 
 const propTypes = {
   categoryList: PropTypes.array,
-  tagList: PropTypes.array,
+  tags: PropTypes.array,
   post: PropTypes.object,
   errors: PropTypes.object,
   status: PropTypes.string,
@@ -43,9 +44,11 @@ class Post extends Component {
         content: props.post.content,
         title: '',
       },
-      selectedCategory: '',
-      visible: false,
-      tagPanelVisible: false,
+      selectedCategory: '', // 已选择的分类
+      selectedTags: [], // 已选中的tag
+      visible: false,   // modal visible
+      dataSource: [],   // 标签 autocomplete 的数据源
+      tagInputValue: '', // 标签 autocomplte input框的值
     }
   }
 
@@ -65,6 +68,20 @@ class Post extends Component {
         }
       })
     }
+    if (!_.isEqual(nextProps.tags, this.props.tags)) {
+      this.setState({
+        dataSource: this.getDataSource(nextProps.tags)
+      })
+    }
+  }
+
+  getDataSource(tags) {
+    return tags.map((tag) => {
+      return {
+        value: tag._id,
+        text: tag.name,
+      }
+    })
   }
 
   updateEditorContent = (content) => {
@@ -100,21 +117,48 @@ class Post extends Component {
     })
   }
 
-  handleTagChange = (e) => {
+  handleTagSearch = (value) => {
     const { fetchTags } = this.props;
-    if (!e.target.value) {
+    if (value === '') {
       this.setState({
-        tagPanelVisible: false,
+        dataSource: [],
+        tagInputValue: value,
       })
       return
     }
     this.setState({
-      tagPanelVisible: true,
+      tagInputValue: value,
     })
-    const params = {
-      word: e.target.value
+    fetchTags({ word: value })
+  }
+
+  /*
+   * 选择标签后的回调
+   */
+  handleTagSelect = (value, option) => {
+    const { selectedTags } = this.state
+    if (selectedTags.filter(tag => tag.id === value).length === 0) {
+      const nextSelectedTags = selectedTags.concat([{
+        id: value,
+        name: option.props.children
+      }])
+      this.setState({
+        selectedTags: nextSelectedTags,
+        tagInputValue: '',
+        dataSource: [],
+      })
     }
-    fetchTags(params)
+  }
+
+  /**
+   * 删除tag回调
+   */
+  handleDeleteTag = (id) => {
+    const { selectedTags } = this.state
+    const nextSelectedTags = selectedTags.filter(tag => tag.id !== id)
+    this.setState({
+      selectedTags: nextSelectedTags
+    })
   }
 
   renderPreview() {
@@ -128,22 +172,23 @@ class Post extends Component {
     )
   }
 
-  renderSuggestTags() {
-    const { tagPanelVisible } = this.state
-    const { tagList } = this.props
-    const style = tagPanelVisible ? { display: 'block' } : {}
-    return (
-      <ul className="suggest-tag-list" style={style}>
-        {tagList.map(tag => (
-          <li key={tag._id}>{tag.name}</li>
-        ))}
-      </ul>
-    )
+  /**
+   *显示已选择的tag
+   */
+  renderTags() {
+    const { selectedTags } = this.state
+    return selectedTags.map((tag) => (
+      <span className="ant-tag" key={tag.id}>
+        {tag.name}
+        <Icon type="close" onClick={() => this.handleDeleteTag(tag.id)} />
+      </span>
+    ))
   }
 
   renderPublishModal() {
-    const { visible, selectedCategory } = this.state
+    const { visible, selectedCategory, dataSource, tagInputValue } = this.state
     const { categoryList } = this.props
+
     return (
       <Modal
         title="发布文章"
@@ -165,13 +210,17 @@ class Post extends Component {
         ))}
 
         <h4>选择标签</h4>
-        <div className="suggest-tag-wrapper">
-          <Input
-            placeholder="输入标签"
-            onChange={this.handleTagChange}
-          />
-          {this.renderSuggestTags()}
+        <div className="selected-tags">
+          {this.renderTags()}
         </div>
+
+        <AutoComplete
+          placeholder="输入标签"
+          dataSource={dataSource}
+          onSearch={this.handleTagSearch}
+          onSelect={this.handleTagSelect}
+          value={tagInputValue}
+        />
         <h4>简介</h4>
         <TextArea rows={3} />
       </Modal>

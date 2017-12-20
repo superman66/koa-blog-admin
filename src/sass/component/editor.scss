@@ -32,25 +32,11 @@ $editorCalcHeight: calc(100vh - 270px);
   }
 }
 
-.suggest-tag-wrapper {
-  position: relative;
-  .suggest-tag-list {
-    display: none;
-    position: absolute;
-    background: #fff;
-    z-index: 990;
-    border: 1px solid #ddd;
-    width: 150px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    li {
-      padding: 8px 10px;
-      cursor: pointer;
-      width: 100%;
-      &:hover, &:active{
-        color: #1890ff;
-      }
-    }
+.selected-tags {
+  display: block;
+  padding: 0 0 10px 0;
+  .ant-tag {
+    margin-top: 5px;
+    background: none;
   }
 }
