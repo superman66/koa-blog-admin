@@ -82,7 +82,7 @@ class PostTable extends Component {
         dataIndex: 'author',
         key: 'author',
         sorter: true,
-        render: (text, record) => <span>{record.name}</span>
+        render: text => <span>{text ? text.username : '--'}</span>
       },
       {
         title: '状态',
@@ -96,7 +96,7 @@ class PostTable extends Component {
         width: 120,
         dataIndex: 'category',
         key: 'category',
-        render: (text, record) => <span>{record.name}</span>
+        render: text => <span>{text ? text.name : '--'}</span>
       },
 
       {
@@ -127,7 +127,7 @@ class PostTable extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a onClick={() => this.goEditPost(record)}>编辑</a>
+            <a onClick={() => this.goEditPost(text, record)}>编辑</a>
             <Divider type="vertical" />
             <a onClick={() => this.openDeleteModal(record)}>删除</a>
           </span>
@@ -142,7 +142,7 @@ class PostTable extends Component {
     router.push('/post/add')
   }
 
-  goEditPost = (record) => {
+  goEditPost = (text, record) => {
     const { router } = this.context
     const { resetPost } = this.props
     resetPost()

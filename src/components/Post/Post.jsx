@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import {
   Spin,
-  Form,
   Icon,
   Input,
   Row,
@@ -15,6 +14,7 @@ import {
 import _ from 'lodash'
 import Editor from 'react-md-editor'
 import marked from 'marked'
+import { getUser } from '../../utils/auth';
 
 const CheckableTag = Tag.CheckableTag;
 const { TextArea } = Input;
@@ -40,9 +40,11 @@ class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: getUser(),
       post: {
         content: props.post.content,
         title: '',
+        desc: '',
       },
       selectedCategory: '', // 已选择的分类
       selectedTags: [], // 已选中的tag
@@ -60,17 +62,22 @@ class Post extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!_.isEqual(nextProps.post, this.props.post)) {
+    const { post, tags } = nextProps
+    if (!_.isEqual(post, this.props.post)) {
+      const selectedCategory = _.get(nextProps, 'post.category._id') || ''
       this.setState({
         post: {
-          content: nextProps.post.content,
-          title: nextProps.post.title
-        }
+          content: post.content,
+          title: post.title,
+          desc: post.desc,
+        },
+        selectedCategory,
+        selectedTags: post.tags,
       })
     }
-    if (!_.isEqual(nextProps.tags, this.props.tags)) {
+    if (!_.isEqual(tags, this.props.tags)) {
       this.setState({
-        dataSource: this.getDataSource(nextProps.tags)
+        dataSource: this.getDataSource(tags)
       })
     }
   }
@@ -84,15 +91,41 @@ class Post extends Component {
     })
   }
 
+  /**
+   * 将选中的tags转换为post提交所需的形式
+   * @param {*} tags
+   */
+  convertTags(tags) {
+    if (!Array.isArray(tags)) {
+      throw new Error('tags should be array')
+    }
+    return tags.map((tag) => {
+      return tag.id
+    })
+  }
+
   updateEditorContent = (content) => {
-    this.setState({
-      content,
+
+    this.setState((prevState) => {
+      return {
+        post: Object.assign({}, prevState.post, {
+          content,
+        })
+      }
     })
   }
 
   handleTitleChange = (e) => {
+    const nextPost = { ...this.state.post, ...{ title: e.target.value } }
     this.setState({
-      title: e.target.value,
+      post: nextPost
+    })
+  }
+
+  handleDescChange = (e) => {
+    const nextPost = { ...this.state.post, ...{ desc: e.target.value } }
+    this.setState({
+      post: nextPost
     })
   }
 
@@ -161,6 +194,33 @@ class Post extends Component {
     })
   }
 
+  handlePublish = () => {
+    const { selectedTags, selectedCategory, user } = this.state
+    const { addPost, post, updatePost } = this.props
+    const formData = {
+      ...this.state.post,
+      ...{
+        tags: this.convertTags(selectedTags),
+        category: selectedCategory
+      }
+    }
+    // update post
+    if (post._id) {
+      updatePost(post._id, formData)
+        .then(this.publishSuccess())
+    } else {
+      formData.author = user._id
+      addPost(formData)
+        .then(this.publishSuccess())
+    }
+    this.hideModal()
+  }
+
+  publishSuccess() {
+    const { router } = this.context
+    router.goBack()
+  }
+
   renderPreview() {
     const { post } = this.state
     if (!post.content) {
@@ -186,17 +246,17 @@ class Post extends Component {
   }
 
   renderPublishModal() {
-    const { visible, selectedCategory, dataSource, tagInputValue } = this.state
+    const { visible, selectedCategory, dataSource, tagInputValue, post } = this.state
     const { categoryList } = this.props
 
     return (
       <Modal
         title="发布文章"
         visible={visible}
-        onOk={this.hideModal}
+        onOk={this.handlePublish}
         onCancel={this.hideModal}
         okText="确认发布"
-        cancelText="取消"
+        cancelText="返回修改"
       >
         <h4>选择分类</h4>
         {categoryList.map((category) => (
@@ -222,7 +282,10 @@ class Post extends Component {
           value={tagInputValue}
         />
         <h4>简介</h4>
-        <TextArea rows={3} />
+        <TextArea rows={3}
+          value={post.desc}
+          onChange={this.handleDescChange}
+        />
       </Modal>
     )
   }
@@ -239,7 +302,7 @@ class Post extends Component {
           <div className="left-box">
             <Input
               className="title"
-              placeholder="请输入标题"
+              placeholder="输入文章标题..."
               value={post.title}
               onChange={this.handleTitleChange}
             />
