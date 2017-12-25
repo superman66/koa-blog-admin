@@ -64,22 +64,21 @@ class LoginForm extends Component {
             {getFieldDecorator('username', {
               rules: [{ required: true, message: 'Please input your username!' }],
             })(
-              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+              <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="test4" />
               )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
               rules: [{ required: true, message: 'Please input your Password!' }],
             })(
-              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
+              <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="123456" />
               )}
           </FormItem>
           <FormItem>
-            <a className="login-form-forgot" href="">Forgot password</a>
             <Button type="primary" htmlType="submit" className="login-form-button">
               Log in
           </Button>
-            Or <a href="">register now!</a>
+
           </FormItem>
         </Form>
       </div>
