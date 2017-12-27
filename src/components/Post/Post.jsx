@@ -15,6 +15,7 @@ import _ from 'lodash'
 import Editor from 'react-md-editor'
 import marked from 'marked'
 import { getUser } from '../../utils/auth';
+import { PostStatus } from '../../constants/PostStatus'
 
 const CheckableTag = Tag.CheckableTag;
 const { TextArea } = Input;
@@ -194,15 +195,18 @@ class Post extends Component {
     })
   }
 
-  handlePublish = () => {
+  handlePublish = (e, postStatus = PostStatus.publish) => {
     const { selectedTags, selectedCategory, user } = this.state
     const { addPost, post, updatePost } = this.props
-    const formData = {
+    let formData = {
+      status: postStatus,
       ...this.state.post,
       ...{
         tags: this.convertTags(selectedTags),
-        category: selectedCategory
       }
+    }
+    if (selectedCategory) {
+      formData.category = selectedCategory
     }
     // update post
     if (post._id) {
@@ -216,6 +220,9 @@ class Post extends Component {
     this.hideModal()
   }
 
+  handleDraft = (e) => {
+    this.handlePublish(e, PostStatus.draft)
+  }
   publishSuccess() {
     const { router } = this.context
     router.goBack()
@@ -245,6 +252,17 @@ class Post extends Component {
     ))
   }
 
+  renderModalFooter() {
+    const { post } = this.props
+    return (
+      <div>
+        <Button onClick={this.hideModal}>返回修改</Button>
+        {!post._id ? <Button onClick={this.handleDraft}>存为草稿</Button> : null}
+        <Button type="primary" onClick={this.handlePublish}>确认发布</Button>
+      </div>
+    )
+  }
+
   renderPublishModal() {
     const { visible, selectedCategory, dataSource, tagInputValue, post } = this.state
     const { categoryList } = this.props
@@ -253,10 +271,8 @@ class Post extends Component {
       <Modal
         title="发布文章"
         visible={visible}
-        onOk={this.handlePublish}
         onCancel={this.hideModal}
-        okText="确认发布"
-        cancelText="返回修改"
+        footer={this.renderModalFooter()}
       >
         <h4>选择分类</h4>
         {categoryList.map((category) => (
