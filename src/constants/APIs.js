@@ -1,4 +1,4 @@
-export const BASE_URL = 'http://localhost:3200/api'
+export const BASE_URL = 'http://localhost:3200/api/admin'
 // common
 export const API_CAPTCHA_JPG = 'data/captcha.jpg';  // 这里需要替换为服务端地址
 export const API_MENUS = '/menus';
@@ -30,9 +30,9 @@ export const API_REVIEW_COMMENT = '/comments/:id' // 审核评论
 export const API_DELETE_COMMENT = '/comments/:id'
 
 // post
-export const API_POSTS = '/posts'
-export const API_POST_BY_ID = '/posts/:id'
-export const API_ADD_POST = '/posts'
+export const API_POSTS = 'admin/posts'
+export const API_POST_BY_ID = 'admin/posts/:id'
+export const API_ADD_POST = 'admin/posts'
 export const API_CHANGE_POST_STATUS = '/posts/:id'
 export const API_UPDATE_POST = '/posts/:id'
 export const API_DELETE_POST = '/posts/:id'
