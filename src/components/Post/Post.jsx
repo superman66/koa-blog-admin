@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import hljs from 'highlight.js'
 import {
   Spin,
   Icon,
@@ -19,6 +20,9 @@ import { PostStatus } from '../../constants/PostStatus'
 
 const CheckableTag = Tag.CheckableTag;
 const { TextArea } = Input;
+marked.setOptions({
+  highlight: code => hljs.highlightAuto(code).value,
+})
 
 const propTypes = {
   categoryList: PropTypes.array,
