@@ -9,8 +9,14 @@ export const API_REGISTER = '/register'
 
 // user
 export const API_USERS = '/users';
-export const API_ADD_USER = '/users/:id'
+export const API_UPDATE_USER = '/users/:id'
+export const API_FETCH_USER_ID = '/users/:id'
 export const API_DELETE_USER = '/users/:id'
+
+// about me
+export const API_ABOUT = '/about'
+export const API_ADD_ABOUT = '/about'
+export const API_UPDATE_ABOUT = '/about/:id'
 
 // category
 export const API_CATEGORIES = '/categories'

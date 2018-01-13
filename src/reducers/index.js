@@ -6,6 +6,7 @@ import category from './category'
 import tag from './tag'
 import comment from './comment'
 import post from './post'
+import about from './about'
 
 const app = combineReducers({
   auth,
@@ -14,7 +15,8 @@ const app = combineReducers({
   category,
   tag,
   comment,
-  post
+  post,
+  about,
 })
 
 export default app

@@ -7,7 +7,9 @@ export default createConstants(
   'FETCH_MENUS',
   // users
   'FETCH_USERS',
-  'DELETE_USERS',
+  'DELETE_USER',
+  'UPDATE_USER',
+  'FETCH_USER_BY_ID',
   // category
   'FETCH_CATEGORIES',
   'ADD_CATEGORY',
@@ -29,5 +31,9 @@ export default createConstants(
   'UPDATE_POST',
   'CHANGE_POST_STATUS',
   'DELETE_POST',
-  'RESET_POST',   // 重置post文章数据
+  'RESET_POST', // 重置post文章数据
+  // about
+  'FETCH_ABOUT',
+  'ADD_ABOUT',
+  'UPDATE_ABOUT'
 )
