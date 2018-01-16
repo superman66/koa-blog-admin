@@ -10,18 +10,19 @@ import {
   Button,
   Modal,
   Tag,
-  AutoComplete,
+  AutoComplete
 } from 'antd'
 import _ from 'lodash'
-import Editor from 'react-md-editor'
+// import Editor from 'react-md-editor'
+import Editor from 'tui-editor'
 import marked from 'marked'
-import { getUser } from '../../utils/auth';
+import { getUser } from '../../utils/auth'
 import { PostStatus } from '../../constants/PostStatus'
 
-const CheckableTag = Tag.CheckableTag;
-const { TextArea } = Input;
+const CheckableTag = Tag.CheckableTag
+const { TextArea } = Input
 marked.setOptions({
-  highlight: code => hljs.highlightAuto(code).value,
+  highlight: code => hljs.highlightAuto(code).value
 })
 
 const propTypes = {
@@ -34,36 +35,38 @@ const propTypes = {
   addPost: PropTypes.func,
   updatePost: PropTypes.func,
   fetchCategories: PropTypes.func,
-  fetchTags: PropTypes.func,
+  fetchTags: PropTypes.func
 }
 
 const contextTypes = {
-  router: PropTypes.object,
+  router: PropTypes.object
 }
 
 class Post extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       user: getUser(),
       post: {
         content: props.post.content,
         title: '',
-        desc: '',
+        desc: ''
       },
       selectedCategory: '', // 已选择的分类
       selectedTags: [], // 已选中的tag
-      visible: false,   // modal visible
-      dataSource: [],   // 标签 autocomplete 的数据源
-      tagInputValue: '', // 标签 autocomplte input框的值
+      visible: false, // modal visible
+      dataSource: [], // 标签 autocomplete 的数据源
+      tagInputValue: '' // 标签 autocomplte input框的值
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { fetchPostById } = this.props
     const { params } = this.context.router
-    params.id && fetchPostById(params.id)
-
+    params.id &&
+      fetchPostById(params.id).then(res => {
+        this.initUIEditor(res.post.content)
+      })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -74,10 +77,10 @@ class Post extends Component {
         post: {
           content: post.content,
           title: post.title,
-          desc: post.desc,
+          desc: post.desc
         },
         selectedCategory,
-        selectedTags: post.tags,
+        selectedTags: post.tags
       })
     }
     if (!_.isEqual(tags, this.props.tags)) {
@@ -88,46 +91,58 @@ class Post extends Component {
   }
 
   getDataSource(tags) {
-    return tags.map((tag) => {
+    return tags.map(tag => {
       return {
         value: tag._id,
-        text: tag.name,
+        text: tag.name
       }
     })
   }
 
   /**
-   * 将选中的tags转换为post提交所需的形式
+   * 将选中的tags转换为post提交所需的数组格式
    * @param {*} tags
    */
   convertTags(tags) {
     if (!Array.isArray(tags)) {
       throw new Error('tags should be array')
     }
-    return tags.map((tag) => {
-      return tag.id
+    return tags.map(tag => {
+      return tag._id
     })
   }
 
-  updateEditorContent = (content) => {
+  /**
+   * 初始化编辑器
+   */
+  initUIEditor = content => {
+    this.editor = new Editor({
+      el: document.querySelector('#editor'),
+      initialEditType: 'markdown',
+      previewStyel: 'tab',
+      initialValue: content,
+      height: '600px'
+    })
+  }
 
-    this.setState((prevState) => {
+  updateEditorContent = content => {
+    this.setState(prevState => {
       return {
         post: Object.assign({}, prevState.post, {
-          content,
+          content
         })
       }
     })
   }
 
-  handleTitleChange = (e) => {
+  handleTitleChange = e => {
     const nextPost = { ...this.state.post, ...{ title: e.target.value } }
     this.setState({
       post: nextPost
     })
   }
 
-  handleDescChange = (e) => {
+  handleDescChange = e => {
     const nextPost = { ...this.state.post, ...{ desc: e.target.value } }
     this.setState({
       post: nextPost
@@ -138,13 +153,13 @@ class Post extends Component {
     const { fetchCategories } = this.props
     fetchCategories()
     this.setState({
-      visible: true,
+      visible: true
     })
   }
 
   hideModal = () => {
     this.setState({
-      visible: false,
+      visible: false
     })
   }
 
@@ -155,17 +170,17 @@ class Post extends Component {
     })
   }
 
-  handleTagSearch = (value) => {
-    const { fetchTags } = this.props;
+  handleTagSearch = value => {
+    const { fetchTags } = this.props
     if (value === '') {
       this.setState({
         dataSource: [],
-        tagInputValue: value,
+        tagInputValue: value
       })
       return
     }
     this.setState({
-      tagInputValue: value,
+      tagInputValue: value
     })
     fetchTags({ word: value })
   }
@@ -175,15 +190,17 @@ class Post extends Component {
    */
   handleTagSelect = (value, option) => {
     const { selectedTags } = this.state
-    if (selectedTags.filter(tag => tag.id === value).length === 0) {
-      const nextSelectedTags = selectedTags.concat([{
-        id: value,
-        name: option.props.children
-      }])
+    if (selectedTags.filter(tag => tag._id === value).length === 0) {
+      const nextSelectedTags = selectedTags.concat([
+        {
+          _id: value,
+          name: option.props.children
+        }
+      ])
       this.setState({
         selectedTags: nextSelectedTags,
         tagInputValue: '',
-        dataSource: [],
+        dataSource: []
       })
     }
   }
@@ -191,9 +208,9 @@ class Post extends Component {
   /**
    * 删除tag回调
    */
-  handleDeleteTag = (id) => {
+  handleDeleteTag = id => {
     const { selectedTags } = this.state
-    const nextSelectedTags = selectedTags.filter(tag => tag.id !== id)
+    const nextSelectedTags = selectedTags.filter(tag => tag._id !== id)
     this.setState({
       selectedTags: nextSelectedTags
     })
@@ -202,29 +219,29 @@ class Post extends Component {
   handlePublish = (e, postStatus = PostStatus.publish) => {
     const { selectedTags, selectedCategory, user } = this.state
     const { addPost, post, updatePost } = this.props
+    const tagss = this.convertTags(selectedTags)
     let formData = {
       status: postStatus,
       ...this.state.post,
       ...{
-        tags: this.convertTags(selectedTags),
+        tags: this.convertTags(selectedTags)
       }
     }
     if (selectedCategory) {
       formData.category = selectedCategory
     }
+    formData.content = this.editor.getMarkdown()
     // update post
     if (post._id) {
-      updatePost(post._id, formData)
-        .then(this.publishSuccess())
+      updatePost(post._id, formData).then(this.publishSuccess())
     } else {
       formData.author = user._id
-      addPost(formData)
-        .then(this.publishSuccess())
+      addPost(formData).then(this.publishSuccess())
     }
     this.hideModal()
   }
 
-  handleDraft = (e) => {
+  handleDraft = e => {
     this.handlePublish(e, PostStatus.draft)
   }
   publishSuccess() {
@@ -235,11 +252,14 @@ class Post extends Component {
   renderPreview() {
     const { post } = this.state
     if (!post.content) {
-      return null;
+      return null
     }
     const preview = marked(post.content)
     return (
-      <div className="preview markdown-body" dangerouslySetInnerHTML={{ __html: preview }} />
+      <div
+        className="preview markdown-body"
+        dangerouslySetInnerHTML={{ __html: preview }}
+      />
     )
   }
 
@@ -248,10 +268,10 @@ class Post extends Component {
    */
   renderTags() {
     const { selectedTags } = this.state
-    return selectedTags.map((tag) => (
-      <span className="ant-tag" key={tag.id}>
+    return selectedTags.map(tag => (
+      <span className="ant-tag" key={tag._id}>
         {tag.name}
-        <Icon type="close" onClick={() => this.handleDeleteTag(tag.id)} />
+        <Icon type="close" onClick={() => this.handleDeleteTag(tag._id)} />
       </span>
     ))
   }
@@ -261,14 +281,24 @@ class Post extends Component {
     return (
       <div>
         <Button onClick={this.hideModal}>返回修改</Button>
-        {!post._id ? <Button onClick={this.handleDraft}>存为草稿</Button> : null}
-        <Button type="primary" onClick={this.handlePublish}>确认发布</Button>
+        {!post._id ? (
+          <Button onClick={this.handleDraft}>存为草稿</Button>
+        ) : null}
+        <Button type="primary" onClick={this.handlePublish}>
+          确认发布
+        </Button>
       </div>
     )
   }
 
   renderPublishModal() {
-    const { visible, selectedCategory, dataSource, tagInputValue, post } = this.state
+    const {
+      visible,
+      selectedCategory,
+      dataSource,
+      tagInputValue,
+      post
+    } = this.state
     const { categoryList } = this.props
 
     return (
@@ -279,7 +309,7 @@ class Post extends Component {
         footer={this.renderModalFooter()}
       >
         <h4>选择分类</h4>
-        {categoryList.map((category) => (
+        {categoryList.map(category => (
           <CheckableTag
             key={category._id}
             checked={selectedCategory === category._id}
@@ -290,9 +320,7 @@ class Post extends Component {
         ))}
 
         <h4>选择标签</h4>
-        <div className="selected-tags">
-          {this.renderTags()}
-        </div>
+        <div className="selected-tags">{this.renderTags()}</div>
 
         <AutoComplete
           placeholder="输入标签"
@@ -302,10 +330,7 @@ class Post extends Component {
           value={tagInputValue}
         />
         <h4>简介</h4>
-        <TextArea rows={3}
-          value={post.desc}
-          onChange={this.handleDescChange}
-        />
+        <TextArea rows={3} value={post.desc} onChange={this.handleDescChange} />
       </Modal>
     )
   }
@@ -327,18 +352,17 @@ class Post extends Component {
               onChange={this.handleTitleChange}
             />
           </div>
-          <div className="right-box">
-            <Button onClick={this.handleOpenModal} >发布</Button>
-          </div>
+          <div className="right-box" />
         </div>
         <Row className="post-content">
-          <Col className="editor" xs={12}>
-            <Editor
-              value={post.content}
-              onChange={this.updateEditorContent}
-            />
+          <Col className="editor" xs={24}>
+            <div id="editor" />
+            <Button className="publish-button" onClick={this.handleOpenModal}>
+              发布
+            </Button>
+            {/* <Editor value={post.content} onChange={this.updateEditorContent} /> */}
           </Col>
-          {this.renderPreview()}
+          {/* {this.renderPreview()} */}
         </Row>
 
         {this.renderPublishModal()}
@@ -347,9 +371,7 @@ class Post extends Component {
   }
 }
 
-
 Post.propTypes = propTypes
 Post.contextTypes = contextTypes
-
 
 export default Post

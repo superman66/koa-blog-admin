@@ -1,37 +1,17 @@
 $editorCalcHeight: calc(100vh - 270px);
-.post-editor-wrapper {
-  min-height: $editorCalcHeight;
-  .post-title {
-    overflow: hidden;
-    .left-box {
-      float: left;
-      width: 100%;
-    }
-    .right-box {
-      position: absolute;
-      right: 40px;
-    }
-    .title {
-      width: 100%;
-    }
-  }
-  .post-content {
-    background: #f5f5f5;
-    .editor {
-      min-height: $editorCalcHeight;
-      border-right: 1px solid #ddd;
-      padding: 25px;
-    }
-    .preview {
-      float: left;
-      width: 50%;
-      overflow: auto;
-      padding: 25px;
-      height: $editorCalcHeight;
-    }
+.post-editor-wrapper{
+  max-height: $editorCalcHeight;
+}
+.editor {
+  position: relative;
+  .publish-button {
+    position: absolute;
+    right: 0px;
+    top: 0;
+    z-index: 1;
+    border-radius: 0;
   }
 }
-
 .selected-tags {
   display: block;
   padding: 0 0 10px 0;
@@ -39,4 +19,9 @@ $editorCalcHeight: calc(100vh - 270px);
     margin-top: 5px;
     background: none;
   }
+}
+// reset tui-editor css
+.te-md-container .CodeMirror,
+.tui-editor-contents {
+  font-size: 14px !important;
 }
