@@ -175,7 +175,13 @@ class PostTable extends Component {
 
 
   handleSearch = (value) => {
-    const nextParms = { ...this.table.getParams(), ...{ word: value } }
+    const nextParms = {
+      ...this.table.getParams(),
+      ...{
+        filterColumn: 'title',
+        word: value
+      }
+    }
     this.loadTableData(nextParms)
   }
 
