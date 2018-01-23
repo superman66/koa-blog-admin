@@ -12,7 +12,6 @@ module.exports = [
     template: 'src/index.html',
     theme: 'default',
     inject: true,
-    hash: true
   }),
   extractSass
 ];

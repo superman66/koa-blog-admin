@@ -1,10 +1,17 @@
 {
   "presets": [
-    "es2015",
+    "env",
     "react",
     "stage-0"
   ],
+  "env": {
+    "production": {
+      "presets": [
+        "react-optimize"
+      ]
+    }
+  },
   "plugins": [
-    ["import", { "libraryName": "antd", "style": "css" }] // `style: true` 会加载 less 文件
+    "lodash"
   ]
 }
