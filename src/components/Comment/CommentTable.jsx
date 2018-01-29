@@ -4,7 +4,9 @@ import { Divider, Modal } from 'antd'
 import TableView from '../Common/TableView'
 import {
   dateRender,
-  orderRender
+  orderRender,
+  CommentStatusRender,
+  ObjectRender,
 } from '../Common/CustomTableRender'
 
 const propTypes = {
@@ -18,15 +20,13 @@ const propTypes = {
   deleteCategory: PropTypes.func,
 }
 
-
 class CommentTable extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       visible: false,
       values: {},
-      errors: props.errors
+      errors: props.errors,
     }
   }
 
@@ -34,15 +34,14 @@ class CommentTable extends Component {
     this.loadTableData(this.table.getParams())
   }
 
-
   getTableOptions() {
-    const { page } = this.props;
+    const { page } = this.props
     return {
       searchInput: {
         placeholder: '内容 / 评论者 / 个人主页',
-        onSearch: this.handleSearch
+        onSearch: this.handleSearch,
       },
-      total: page.total || 0
+      total: page.total || 0,
     }
   }
 
@@ -52,13 +51,14 @@ class CommentTable extends Component {
         title: '序号',
         width: 80,
         key: 'index',
-        render: orderRender
+        render: orderRender,
       },
       {
         title: '状态',
         width: 80,
         dataIndex: 'status',
         key: 'status',
+        render: CommentStatusRender,
       },
       {
         title: '评论者',
@@ -66,6 +66,13 @@ class CommentTable extends Component {
         dataIndex: 'name',
         key: 'name',
         sorter: true,
+      },
+      {
+        title: '文章',
+        width: 300,
+        dataIndex: 'post',
+        key: 'post',
+        render: text => ObjectRender(text, 'title'),
       },
       {
         title: '评论内容',
@@ -78,7 +85,7 @@ class CommentTable extends Component {
         width: 100,
         dataIndex: 'website',
         key: 'website',
-        render: text => <a href="#">{text}</a>
+        render: text => <a href="#">{text}</a>,
       },
       {
         title: '点赞数',
@@ -93,15 +100,7 @@ class CommentTable extends Component {
         key: 'createTime',
         width: 300,
         sorter: true,
-        render: dateRender
-      },
-      {
-        title: '更新时间',
-        dataIndex: 'updateTime',
-        key: 'updateTime',
-        width: 300,
-        sorter: true,
-        render: dateRender
+        render: dateRender,
       },
       {
         title: '操作',
@@ -118,37 +117,34 @@ class CommentTable extends Component {
     ]
   }
 
-  openDeleteModal = (record) => {
+  openDeleteModal = record => {
     this.delRef = Modal.confirm({
       title: '确认删除',
       okText: '确认',
       cancelText: '取消',
-      onOk: () => this.handleDelete(record)
-    });
+      onOk: () => this.handleDelete(record),
+    })
   }
-  loadTableData = (params) => {
+  loadTableData = params => {
     const { fetchComments } = this.props
     fetchComments(params)
   }
 
-  handleDelete = (record) => {
+  handleDelete = record => {
     const { deleteCategory } = this.props
 
-    deleteCategory(record._id)
-      .then(() => {
-        this.delRef.destroy()
-        this.table.reload()
-      })
+    deleteCategory(record._id).then(() => {
+      this.delRef.destroy()
+      this.table.reload()
+    })
   }
 
-  handleSearch = (value) => {
+  handleSearch = value => {
     const nextParms = { ...this.table.getParams(), ...{ word: value } }
     this.loadTableData(nextParms)
   }
   renderExpandRow(record) {
-    return (
-      <p style={{ margin: 0 }}>{record.content}</p>
-    )
+    return <p style={{ margin: 0 }}>{record.content}</p>
   }
   render() {
     const { visible, values, errors } = this.state
@@ -158,7 +154,7 @@ class CommentTable extends Component {
       page,
       addCategory,
       updateCategory,
-     } = this.props
+    } = this.props
     return (
       <div>
         <TableView
@@ -169,7 +165,7 @@ class CommentTable extends Component {
           loadData={this.loadTableData}
           columns={this.getColumn()}
           expandedRowRender={this.renderExpandRow}
-          ref={(ref) => {
+          ref={ref => {
             this.table = ref
           }}
         />
@@ -178,8 +174,6 @@ class CommentTable extends Component {
   }
 }
 
-
 CommentTable.propTypes = propTypes
-
 
 export default CommentTable

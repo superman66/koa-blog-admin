@@ -1,22 +1,18 @@
 import React from 'react'
 import { format } from 'date-fns'
 import { CONF_DATETIME } from '../../constants/Conf'
-import { PostStatus } from '../../constants/PostStatus';
+import { PostStatus, CommentStatus } from '../../constants/PostStatus'
 
 export const orderRender = (text, record, index) => {
   index += 1
-  return (
-    <span>{index}</span>
-  )
+  return <span>{index}</span>
 }
 
-export const dateRender = (text) => {
-  return (
-    format(text, CONF_DATETIME)
-  )
+export const dateRender = text => {
+  return text ? format(text, CONF_DATETIME) : '--'
 }
 
-export const PostStatusRender = (text) => {
+export const PostStatusRender = text => {
   let msg = ''
   if (text === PostStatus.draft) {
     msg = '草稿'
@@ -25,8 +21,25 @@ export const PostStatusRender = (text) => {
     msg = '已发布'
   }
   if (text === PostStatus.unpublish) {
-    msg = '已下架'
+    msg = '未发布'
   }
   return msg
 }
 
+export const CommentStatusRender = text => {
+  let msg = ''
+  if (text === CommentStatus.failReview) {
+    msg = '审核失败'
+  }
+  if (text === CommentStatus.passReview) {
+    msg = '审核通过'
+  }
+  if (text === CommentStatus.underReview) {
+    msg = '审核中'
+  }
+  return msg
+}
+
+export const ObjectRender = (text, key) => {
+  return text[key] ? text[key] : '--'
+}
