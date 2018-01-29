@@ -13,7 +13,6 @@ import {
   AutoComplete
 } from 'antd'
 import _ from 'lodash'
-// import Editor from 'react-md-editor'
 import Editor from 'tui-editor'
 import marked from 'marked'
 import { getUser } from '../../utils/auth'
@@ -125,15 +124,6 @@ class Post extends Component {
     })
   }
 
-  updateEditorContent = content => {
-    this.setState(prevState => {
-      return {
-        post: Object.assign({}, prevState.post, {
-          content
-        })
-      }
-    })
-  }
 
   handleTitleChange = e => {
     const nextPost = { ...this.state.post, ...{ title: e.target.value } }
@@ -249,20 +239,6 @@ class Post extends Component {
     router.goBack()
   }
 
-  renderPreview() {
-    const { post } = this.state
-    if (!post.content) {
-      return null
-    }
-    const preview = marked(post.content)
-    return (
-      <div
-        className="preview markdown-body"
-        dangerouslySetInnerHTML={{ __html: preview }}
-      />
-    )
-  }
-
   /**
    *显示已选择的tag
    */
@@ -360,9 +336,7 @@ class Post extends Component {
             <Button className="publish-button" onClick={this.handleOpenModal}>
               发布
             </Button>
-            {/* <Editor value={post.content} onChange={this.updateEditorContent} /> */}
           </Col>
-          {/* {this.renderPreview()} */}
         </Row>
 
         {this.renderPublishModal()}

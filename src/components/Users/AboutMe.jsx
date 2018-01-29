@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Editor from 'react-md-editor'
+import Editor from 'tui-editor'
 import marked from 'marked'
 import hljs from 'highlight.js'
-import {
-  Button,
-  Row,
-  Col,
-} from 'antd'
-import pick from 'lodash/pick'
+import { Button, Row, Col } from 'antd'
 import Loading from '../Loading'
-import RequestStatus from '../../constants/RequestStatus';
-import { getUser } from '../../utils/auth';
+import RequestStatus from '../../constants/RequestStatus'
 
 marked.setOptions({
   highlight: code => hljs.highlightAuto(code).value,
@@ -28,38 +22,35 @@ const propTypes = {
 class AboutMe extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      about: {},
-    }
+    this.state = {}
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { onFetchAbout } = this.props
-    onFetchAbout && onFetchAbout()
-      .then((res) => {
-        this.setState({
-          about: res.about
-        })
+    onFetchAbout &&
+      onFetchAbout().then(res => {
+        this.initUIEditor(res.about.content)
       })
   }
 
-  handleContentChange = (content) => {
-    this.setState((prevState) => {
-      return {
-        about: Object.assign({}, prevState.user, {
-          content,
-        })
-      }
+  /**
+   * 初始化编辑器
+   */
+  initUIEditor = content => {
+    this.editor = new Editor({
+      el: document.querySelector('#editor'),
+      initialEditType: 'markdown',
+      previewStyel: 'tab',
+      initialValue: content,
+      height: '600px',
     })
   }
 
   handleSubmit = () => {
-    const {
-      about,
-      onAddAbout,
-      onUpdateAbout,
-    } = this.props
-    const nextAbout = pick(this.state.about, 'content')
+    const { about, onAddAbout, onUpdateAbout } = this.props
+    const nextAbout = {
+      content: this.editor.getMarkdown(),
+    }
     if (about._id) {
       onUpdateAbout && onUpdateAbout(about._id, nextAbout)
     } else {
@@ -68,34 +59,26 @@ class AboutMe extends Component {
   }
 
   render() {
-    const { about } = this.state
     const { status } = this.props
     if (status === RequestStatus.REQUEST) {
       return <Loading />
     }
     return (
       <div>
-        <Row
-          type="flex"
-          className="about-content"
-        >
+        <Row type="flex" className="about-content">
           <Col className="editor" xs={24}>
-            <Editor
-              value={about.content}
-              onChange={this.handleContentChange}
-            />
+            <div id="editor" />
           </Col>
           <Col xs={24} style={{ marginTop: '15px', textAlign: 'center' }}>
-            <Button
-              type="primary"
-              onClick={this.handleSubmit}
-            >确定</Button>
+            <Button type="primary" onClick={this.handleSubmit}>
+              确定
+            </Button>
           </Col>
         </Row>
       </div>
-    );
+    )
   }
 }
 
 AboutMe.propTypes = propTypes
-export default AboutMe;
+export default AboutMe
