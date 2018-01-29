@@ -3,12 +3,12 @@ import { format } from 'date-fns'
 import { CONF_DATETIME } from '../../constants/Conf'
 import { PostStatus, CommentStatus } from '../../constants/PostStatus'
 
-export const orderRender = (text, record, index) => {
+export const OrderRender = (text, record, index) => {
   index += 1
   return <span>{index}</span>
 }
 
-export const dateRender = text => {
+export const DateRender = text => {
   return text ? format(text, CONF_DATETIME) : '--'
 }
 

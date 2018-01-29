@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { Divider, Modal } from 'antd'
 import TableView from '../Common/TableView'
 import {
-  dateRender,
-  orderRender
+  DateRender,
+  OrderRender
 } from '../Common/CustomTableRender'
 import CategoryModal from './CategoryModal'
 
@@ -63,7 +63,7 @@ class CategoryTable extends Component {
         title: '序号',
         width: 80,
         key: 'index',
-        render: orderRender
+        render: OrderRender
       },
       {
         title: '分类名称',
@@ -78,7 +78,7 @@ class CategoryTable extends Component {
         key: 'createTime',
         width: 300,
         sorter: true,
-        render: dateRender
+        render: DateRender
       },
       {
         title: '更新时间',
@@ -86,7 +86,7 @@ class CategoryTable extends Component {
         key: 'updateTime',
         width: 300,
         sorter: true,
-        render: dateRender
+        render: DateRender
       },
       {
         title: '操作',

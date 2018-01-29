@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import { Divider, Modal } from 'antd'
 import TableView from '../Common/TableView'
 import {
-  dateRender,
-  orderRender,
+  DateRender,
+  OrderRender,
   CommentStatusRender,
   ObjectRender,
 } from '../Common/CustomTableRender'
@@ -51,7 +51,7 @@ class CommentTable extends Component {
         title: '序号',
         width: 80,
         key: 'index',
-        render: orderRender,
+        render: OrderRender,
       },
       {
         title: '状态',
@@ -100,7 +100,7 @@ class CommentTable extends Component {
         key: 'createTime',
         width: 300,
         sorter: true,
-        render: dateRender,
+        render: DateRender,
       },
       {
         title: '操作',

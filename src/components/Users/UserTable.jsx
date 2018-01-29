@@ -4,8 +4,8 @@ import { Divider, Modal } from 'antd'
 import { Link } from 'react-router'
 import TableView from '../Common/TableView'
 import {
-  dateRender,
-  orderRender
+  DateRender,
+  OrderRender
 } from '../Common/CustomTableRender'
 
 
@@ -48,7 +48,7 @@ class UserTable extends Component {
         title: '序号',
         width: 80,
         key: 'index',
-        render: orderRender
+        render: OrderRender
       },
       {
         title: '用户名',
@@ -75,7 +75,7 @@ class UserTable extends Component {
         key: 'createTime',
         width: 150,
         sorter: true,
-        render: dateRender
+        render: DateRender
       },
       {
         title: '操作',
