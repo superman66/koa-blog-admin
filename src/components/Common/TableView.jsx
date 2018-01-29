@@ -1,11 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {
-  Table,
-  Pagination,
-  Button,
-  Input,
-} from 'antd'
+import { Table, Pagination, Button, Input } from 'antd'
 import _ from 'lodash'
 import ReqeustStatus from '../../constants/RequestStatus'
 import convertOrderType from '../../utils/covertOrderType'
@@ -21,73 +16,82 @@ const propTypes = {
 }
 
 const defaultProps = {
-  options: {}
+  options: {},
 }
 
 class TablveView extends Component {
   constructor(props) {
     super(props)
-    const { total } = props.options;
+    const { total } = props.options
     this.state = {
       pagination: {
         total,
         current: 1,
         pageSize: 30,
-        showTotal: this.showTotal
+        showTotal: this.showTotal,
       },
       params: {
         page: 1,
         pageSize: 30,
-      }
+      },
     }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.data !== this.props.data) {
-      this.setState((prevState) => {
+      this.setState(prevState => {
         return {
-          pagination: { ...prevState.pagination, ...{ total: nextProps.options.total } }
+          pagination: {
+            ...prevState.pagination,
+            ...{ total: nextProps.options.total },
+          },
         }
       })
     }
   }
 
   getParams() {
-    return _(this.state.params).omitBy(_.isUndefined).value();
+    return _.omit(this.state.params, _.isUndefined)
   }
 
   setParams(params, callback) {
-    this.setState((prevState) => {
-      return {
-        params: { ...prevState.params, ...params }
-      }
-    }, () => {
-      callback && callback();
-    })
+    this.setState(
+      prevState => {
+        return {
+          params: { ...prevState.params, ...params },
+        }
+      },
+      () => {
+        callback && callback()
+      },
+    )
   }
   reload() {
-    this.setState({
-      params: { ...this.state.params, page: 1 }
-    }, this.update);
+    this.setState(
+      {
+        params: { ...this.state.params, page: 1 },
+      },
+      this.update,
+    )
   }
 
   update() {
-    const { params } = this.state;
-    this.loadTableData(params);
+    const { params } = this.state
+    this.loadTableData(params)
   }
 
-  showTotal = (total) => {
+  showTotal = total => {
     return `Total ${total} items`
   }
 
   handlePaginatiChange = (page, pageSize) => {
-    this.setState((prevState) => {
+    this.setState(prevState => {
       return {
-        pagination: { ...prevState.pagination, ...{ current: page } }
+        pagination: { ...prevState.pagination, ...{ current: page } },
       }
     })
     const params = {
       page,
-      pageSize
+      pageSize,
     }
 
     this.setParams(params, this.loadTableData)
@@ -96,32 +100,32 @@ class TablveView extends Component {
   handleTableChange = (pagination, filters, sorter) => {
     const params = {
       orderColumn: sorter.field,
-      orderType: convertOrderType(sorter.order)
+      orderType: convertOrderType(sorter.order),
     }
 
     this.setParams(params, this.loadTableData)
   }
 
   handleShowSizeChange = (current, pageSize) => {
-    this.setState((prevState) => {
+    this.setState(prevState => {
       return {
-        pagination: { ...prevState.pagination, ...{ pageSize } }
+        pagination: { ...prevState.pagination, ...{ pageSize } },
       }
     })
     const params = {
       page: 1,
-      pageSize
+      pageSize,
     }
     this.setParams(params, this.loadTableData)
   }
 
-  loadTableData = (params) => {
+  loadTableData = params => {
     const { loadData } = this.props
     loadData(params || this.state.params)
   }
 
   renderPagination() {
-    const { pagination } = this.state;
+    const { pagination } = this.state
     return (
       <Pagination
         className="custom-table-pagination"
@@ -134,41 +138,30 @@ class TablveView extends Component {
         defaultCurrent={1}
         onChange={this.handlePaginatiChange}
       />
-    );
+    )
   }
   renderSearch() {
-    const { searchInput = {} } = this.props.options;
-    const {
-      placeholder = '',
-      style = { width: 250 },
-      onSearch
-  } = searchInput
+    const { searchInput = {} } = this.props.options
+    const { placeholder = '', style = { width: 250 }, onSearch } = searchInput
 
     return (
-      Object.keys(searchInput).length !== 0 &&
-      <Search
-        className="search"
-        placeholder={placeholder}
-        onSearch={value => onSearch(value.trim())}
-        style={style}
-        enterButton
-      />
+      Object.keys(searchInput).length !== 0 && (
+        <Search
+          className="search"
+          placeholder={placeholder}
+          onSearch={value => onSearch(value.trim())}
+          style={style}
+          enterButton
+        />
+      )
     )
   }
 
   renderAddButton() {
     const { addButton = {} } = this.props.options
-    const {
-      icon = 'plus',
-      text = '新建',
-      onClick,
-     } = addButton
+    const { icon = 'plus', text = '新建', onClick } = addButton
     return Object.keys(addButton).length !== 0 ? (
-      <Button
-        type="primary"
-        icon={icon}
-        onClick={onClick}
-      >
+      <Button type="primary" icon={icon} onClick={onClick}>
         {text}
       </Button>
     ) : null
