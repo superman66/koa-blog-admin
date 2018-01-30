@@ -108,8 +108,6 @@ class CommentTable extends Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a onClick={() => this.openAddOrUpdateModal(record)}>编辑</a>
-            <Divider type="vertical" />
             <a onClick={() => this.openDeleteModal(record)}>删除</a>
           </span>
         ),

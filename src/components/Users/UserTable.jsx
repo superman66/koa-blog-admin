@@ -85,7 +85,7 @@ class UserTable extends Component {
           <span>
             {/* <Link to={`/users/edit/${record._id}`}>编辑</Link>
             <Divider type="vertical" /> */}
-            <a onClick={() => this.openConfirmModal(record)}>删除</a>
+            {/* <a onClick={() => this.openConfirmModal(record)}>删除</a> */}
           </span>
         ),
       },

@@ -1,14 +1,17 @@
-export const BASE_URL = 'http://localhost:3200/api/admin'
+export const BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? 'http://api.iamsuperman.cn'
+    : 'http://localhost:3200/api/admin'
 // common
-export const API_CAPTCHA_JPG = 'data/captcha.jpg';  // 这里需要替换为服务端地址
-export const API_MENUS = '/menus';
+export const API_CAPTCHA_JPG = 'data/captcha.jpg' // 这里需要替换为服务端地址
+export const API_MENUS = '/menus'
 
 // auth
 export const API_LOGIN = '/login'
 export const API_REGISTER = '/register'
 
 // user
-export const API_USERS = '/users';
+export const API_USERS = '/users'
 export const API_UPDATE_USER = '/users/:id'
 export const API_FETCH_USER_ID = '/users/:id'
 export const API_DELETE_USER = '/users/:id'
