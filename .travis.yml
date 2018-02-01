@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+- '7'
+cache:
+  bundler: true
+  directories:
+  - node_modules
+before_install:
+- openssl aes-256-cbc -K $encrypted_8eeba0571edd_key -iv $encrypted_8eeba0571edd_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+install:
+- npm install
+script:
+- npm run build
+after_script:
+- scp -P $PORT -r build $SERVER_NAME:www/koa-blog-admin
+addons:
+  ssh_known_hosts:
+  - secure: hiOfbGiQQNpRECo2a10cfZuA6gN4KXy7+qB6CkHq67SzVz72SsJgOGABhZqqi2thYIgQmUlyxDcthj8sD0npX+mve6Ko0oRg2pxsIofQaS8/uByp7mOcoRfD25aWVTPkpxwlc6yxLQD8YHw6ncLJQ82vXFgjI2H77Pn3PxMwq3xNeLJQdCENIuRqXYiIvFWAAtTJMvYE7j5pX09cpQPbxiy9TdOOqizkYFkYqyVvgykcgRO+bwCvyCvo9dzLq+mSUsF2atDhzW1Wg5dCuatdkUdvCcU8fo5Gl0ySzIfqSGYhT4CcU5cGUc3DuGlvexVcerEMutTkVn75xrQhM9N3DG1Izq5ch5D0Nf2FWpp2cDZ+7/lp+cW+QYm4kDf8eOBD1CfqAEM+SAxBKzxcm14Pay/cQi0To6qp4QIylR24Gc8KbWoeHu9OCFQZqA/hnVu5jiZ7LojbWiK1NFId0J5UN35x5WyIw7sBrK3GPtLJ09UBh1x4FiUBT+7EJ5nFvmb+bJrt1CroA9I1NG1xlw1yTp744CDMcmeQNWEkwSaQbVro42FS6Vd7G3j/zxQtF601hM8apiF3dhA+3KbE2ob6i6ijzAOaN9D2PzXIbL2YxhCMBgsOKcLJK3oKjrVMj3fQWURYIBekq6YVSpsEvQ5tP/IvGo+T04XUefaNfXPuD38=
+branches:
+  only:
+  - master
+env:
+  global:
+    secure: hiOfbGiQQNpRECo2a10cfZuA6gN4KXy7+qB6CkHq67SzVz72SsJgOGABhZqqi2thYIgQmUlyxDcthj8sD0npX+mve6Ko0oRg2pxsIofQaS8/uByp7mOcoRfD25aWVTPkpxwlc6yxLQD8YHw6ncLJQ82vXFgjI2H77Pn3PxMwq3xNeLJQdCENIuRqXYiIvFWAAtTJMvYE7j5pX09cpQPbxiy9TdOOqizkYFkYqyVvgykcgRO+bwCvyCvo9dzLq+mSUsF2atDhzW1Wg5dCuatdkUdvCcU8fo5Gl0ySzIfqSGYhT4CcU5cGUc3DuGlvexVcerEMutTkVn75xrQhM9N3DG1Izq5ch5D0Nf2FWpp2cDZ+7/lp+cW+QYm4kDf8eOBD1CfqAEM+SAxBKzxcm14Pay/cQi0To6qp4QIylR24Gc8KbWoeHu9OCFQZqA/hnVu5jiZ7LojbWiK1NFId0J5UN35x5WyIw7sBrK3GPtLJ09UBh1x4FiUBT+7EJ5nFvmb+bJrt1CroA9I1NG1xlw1yTp744CDMcmeQNWEkwSaQbVro42FS6Vd7G3j/zxQtF601hM8apiF3dhA+3KbE2ob6i6ijzAOaN9D2PzXIbL2YxhCMBgsOKcLJK3oKjrVMj3fQWURYIBekq6YVSpsEvQ5tP/IvGo+T04XUefaNfXPuD38=
