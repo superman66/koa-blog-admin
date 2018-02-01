@@ -1,6 +1,6 @@
 export const BASE_URL =
   process.env.NODE_ENV === 'production'
-    ? 'http://api.iamsuperman.cn'
+    ? 'http://api.iamsuperman.cn/admin'
     : 'http://localhost:3200/api/admin'
 // common
 export const API_CAPTCHA_JPG = 'data/captcha.jpg' // 这里需要替换为服务端地址
