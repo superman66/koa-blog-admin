@@ -12,7 +12,7 @@ export default {
     {
       path: '/',
       // onEnter: redirectToLogin,
-      component: require('../containers/Index').default,
+      component: require('../containers/index').default,
       indexRoute: {
         component: require('../containers/Dashboard').DashboardPage,
         onEnter: redirectToLogin,
